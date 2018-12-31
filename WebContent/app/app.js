@@ -1,0 +1,14 @@
+/* Components */
+const compRegistration = { template: '<registration></registration>' };
+
+const router = new VueRouter({
+    mode: 'hash',
+    routes: [
+        { path: '/registration', component: compRegistration }
+    ]
+});
+
+let app = new Vue({
+    router, 
+    el: '#flightReservation'
+});
