@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.InputStream;
 
 import javax.servlet.ServletContext;
+import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,12 +14,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.sun.jersey.multipart.FormDataParam;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import model.User;
 import model.collections.Users;
 import model.types.UserState;
 import model.types.UserType;
+import utils.Writer;
 
 @Path("/auth")
 public class AuthService {
@@ -46,31 +51,6 @@ public class AuthService {
 		return users.checkLoginValidation(user);
 	}
 	
-	
-//	@POST
-//	@Path("/register")
-//	@Consumes(MediaType.MULTIPART_FORM_DATA)
-//	public String registerUser(@FormDataParam("user") User user, @FormDataParam("file") InputStream inStream,
-//			@FormDataParam("file") FormDataContentDisposition cdh) {
-//		
-//		String uploadFileLocation = "D:\\dev\\flightreservation\\WebContent\\res\\images\\";
-//
-//		String uploadedFileLocation = "D://uploadedFiles/" + fileDetail.getFileName();
-//	    System.out.println(uploadedFileLocation);
-//	    // save it
-//	    File  objFile=new File(uploadedFileLocation);
-//	    if(objFile.exists())
-//	    {
-//	        objFile.delete();
-//
-//	    }
-//
-//	    saveToFile(uploadedInputStream, uploadedFileLocation);
-//	    
-//		// @TODO: Implement this. Don't return String.
-//		return "OK";
-//	}
-	
 	@POST
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -89,6 +69,40 @@ public class AuthService {
 			users.saveUsers();
 			return user;
 		}
+	}
+	
+	@POST
+	@Path("/register-image")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public User registerUser(	@FormDataParam("username") String username,
+								@FormDataParam("file") InputStream inStream,
+								@FormDataParam("file") FormDataContentDisposition fileDetail) {
+		
+		System.out.println("[REGISTER-IMAGE-UPLOAD] " + username);
+		Users users = getUsers();
+		User user = users.containsUsername(username);
+		
+		if (user == null) {
+			return null;
+		} else {
+			String imageLocation = saveImage(user.getUsername(), inStream, fileDetail);
+			user.setImagePath(imageLocation);
+			users.saveUsers();
+			return user;
+		}
+	}
+	
+	private String saveImage(String username, InputStream inStream, FormDataContentDisposition fileDetail) {
+		String uploadFileLocation = "D:\\dev\\frserver\\images\\";
+		
+		File file = new File(uploadFileLocation + "\\" + username);
+		file.mkdir();
+		
+		String fileLocation = uploadFileLocation + "\\" + username + "\\" + fileDetail.getFileName();
+	    Writer.saveImageToFile(inStream, fileLocation);
+	    
+	    return uploadFileLocation;
 	}
 	
 	private Users getUsers() {

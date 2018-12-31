@@ -27,7 +27,7 @@ Vue.component('registration', {
             <tr><input type="text"     placeholder="Prezime"        v-model="user.surname" /></tr>
             <tr><input type="text"     placeholder="Broj telefona"  v-model="user.phoneNumber" /></tr>
             <tr><input type="text"     placeholder="E-Mail"         v-model="user.email" /></tr>
-            <tr><input type="file"     accept="image/*"             v-on:change="onFileChanged()" /></tr>
+            <tr><input type="file"     accept="image/*"             v-on:change="onFileChanged" /></tr>
             <tr><input type="button"   value="Registruj se"         v-on:click="register()" /></tr>
         </table>
     </div>
@@ -43,12 +43,23 @@ Vue.component('registration', {
         },
 
         register : function() {
+            const formData = new FormData();
+            formData.append('user', this.user);
+
             axios.post('rest/auth/register', this.user)
             .then(response => {
                 if (response.data === '') { // user doesn't exists
                     toast('Greška prilikom registrovanja naloga');
                 } else {
                     this.loggedUser = response.data;
+
+                    const formData = new FormData();
+                    formData.append('username', this.user.username);
+                    formData.append('file', this.selectedImage, this.selectedImage.name);
+                    
+                    axios.post('rest/auth/register-image/', formData)
+                    .then(response => { });
+
                     this.userLoggedIn = true;
                 }
             });
