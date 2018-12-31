@@ -58,6 +58,11 @@ public class User {
 				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", imagePath=" + imagePath + ", state=" + state
 				+ ", type=" + type + "]";
 	}
+	
+	public String toCsvString() {
+		return username + "," + password + "," + name + "," + surname + "," + phoneNumber + "," + email + "," + 
+				imagePath + "," + state + "," + type;
+	}
 
 	public String getUsername() {
 		return username;

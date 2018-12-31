@@ -3,6 +3,8 @@ package model.collections;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -12,10 +14,12 @@ import model.types.UserType;
 
 public class Users {
 
+	public static String usersFileLocation = "D:\\dev\\flightreservation\\WebContent\\res\\users.csv";
+	
 	private ArrayList<User> users;
 	
 	public Users() {
-		this("D:\\dev\\flightreservation\\WebContent\\res\\users.csv");
+		this(usersFileLocation);
 	}
 	
 	public Users(String path) {
@@ -68,6 +72,20 @@ public class Users {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+	}
+	
+	public void saveUsers() {
+		try {
+			PrintWriter writer = new PrintWriter(usersFileLocation);
+			
+			for (User user : users) {
+				writer.println(user.toCsvString());
+			}
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

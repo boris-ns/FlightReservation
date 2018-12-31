@@ -1,5 +1,8 @@
 package services;
 
+import java.io.File;
+import java.io.InputStream;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -9,8 +12,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.sun.jersey.multipart.FormDataParam;
+
 import model.User;
 import model.collections.Users;
+import model.types.UserState;
+import model.types.UserType;
 
 @Path("/auth")
 public class AuthService {
@@ -40,14 +47,48 @@ public class AuthService {
 	}
 	
 	
+//	@POST
+//	@Path("/register")
+//	@Consumes(MediaType.MULTIPART_FORM_DATA)
+//	public String registerUser(@FormDataParam("user") User user, @FormDataParam("file") InputStream inStream,
+//			@FormDataParam("file") FormDataContentDisposition cdh) {
+//		
+//		String uploadFileLocation = "D:\\dev\\flightreservation\\WebContent\\res\\images\\";
+//
+//		String uploadedFileLocation = "D://uploadedFiles/" + fileDetail.getFileName();
+//	    System.out.println(uploadedFileLocation);
+//	    // save it
+//	    File  objFile=new File(uploadedFileLocation);
+//	    if(objFile.exists())
+//	    {
+//	        objFile.delete();
+//
+//	    }
+//
+//	    saveToFile(uploadedInputStream, uploadedFileLocation);
+//	    
+//		// @TODO: Implement this. Don't return String.
+//		return "OK";
+//	}
+	
 	@POST
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String registerUser(User user) {
+	public User registerUser(User user) {
+		System.out.println("[REGISTER] " + user);
 		
-		// @TODO: Implement this. Don't return String.
-		return "OK";
+		Users users = getUsers();
+		if (users.getUsers().contains(user)) {
+			return null;
+		} else {
+			user.setType(UserType.REGULAR);
+			user.setState(UserState.NORMAL);
+			user.setImagePath("imagePath");
+			users.addUser(user);
+			users.saveUsers();
+			return user;
+		}
 	}
 	
 	private Users getUsers() {
