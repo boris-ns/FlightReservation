@@ -6,7 +6,8 @@ Vue.component('login', {
                 username: null,
                 password: null
             },
-            userLoggedIn: false
+            userLoggedIn: false,
+            loggedUser: null
         }
     },
 
@@ -21,7 +22,8 @@ Vue.component('login', {
         </table>
     </div>
     <div v-else-if="userLoggedIn">
-        <home-page></home-page>
+        <home-page  v-if="loggedUser.type === 'REGULAR'"    :user="loggedUser"></home-page>
+        <admin-page v-else-if="loggedUser.type === 'ADMIN'" :user="loggedUser"></admin-page>
     </div>
     `,
 
@@ -29,10 +31,16 @@ Vue.component('login', {
         login : function() {
             axios.post('rest/auth/login', this.user)
             .then(response => {
-                this.userLoggedIn = response.data
-                
-                if (!this.userLoggedIn) {
+                if (response.data === '') { // user doesn't exists
                     toast('Nalog sa unetom kombinacijom korisničkog imena i lozinke ne postoji.');
+                } else {
+                    this.loggedUser = response.data;
+                    
+                    if (this.loggedUser.state === "BLOCKED") {
+                        toast('Vaš nalog je blokiran. Ne možete se prijaviti na aplikaciju.'); 
+                    } else {
+                        this.userLoggedIn = true;
+                    }
                 }
             });
         }

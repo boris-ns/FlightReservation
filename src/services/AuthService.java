@@ -29,8 +29,12 @@ public class AuthService {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean loginUser(User user) {
+	public User loginUser(User user) {
 		System.out.println("LOGIN: " + user);
+	
+		// @TODO: Don't forget Cookies ! There will be more stuff when we gather user info
+		// Probably we will need to send user info instead true/false
+		// or when home page loads we will send separate GET requests for info we need
 		Users users = getUsers();
 		return users.checkLoginValidation(user);
 	}
@@ -42,7 +46,7 @@ public class AuthService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String registerUser(User user) {
 		
-		// @TODO: Implement this
+		// @TODO: Implement this. Don't return String.
 		return "OK";
 	}
 	

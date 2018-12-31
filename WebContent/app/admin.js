@@ -1,4 +1,4 @@
-Vue.component('home-page', {
+Vue.component('admin-page', {
     data: function() {
         return {
 
@@ -12,7 +12,7 @@ Vue.component('home-page', {
     template:
     `
     <div>
-        <h1>Welcome {{user.name}}</h1>
+        <h1>This is ADMIN page :)</h1>
     </div>
     `,
 

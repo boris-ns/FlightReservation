@@ -1,6 +1,7 @@
 package model;
 
 import model.types.UserState;
+import model.types.UserType;
 
 public class User {
 
@@ -12,13 +13,14 @@ public class User {
 	private String email;
 	private String imagePath; // da li ce biti samo putanja iili objekat slike ?
 	private UserState state;
+	private UserType type;
 	
 	
 	public User() {
 	}
 	
 	public User(String username, String password, String name, String surname, String phoneNumber, String email,
-			String imagePath, UserState state) {
+			String imagePath, UserState state, UserType type) {
 
 		this.username = username;
 		this.password = password;
@@ -28,6 +30,7 @@ public class User {
 		this.email = email;
 		this.imagePath = imagePath;
 		this.state = state;
+		this.type = type;
 	}
 	
 	@Override
@@ -48,11 +51,12 @@ public class User {
 		return true;
 	}
 
+
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", name=" + name + ", surname=" + surname
 				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", imagePath=" + imagePath + ", state=" + state
-				+ "]";
+				+ ", type=" + type + "]";
 	}
 
 	public String getUsername() {
@@ -117,5 +121,13 @@ public class User {
 
 	public void setState(UserState state) {
 		this.state = state;
+	}
+
+	public UserType getType() {
+		return type;
+	}
+
+	public void setType(UserType type) {
+		this.type = type;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 
 import model.User;
 import model.types.UserState;
+import model.types.UserType;
 
 public class Users {
 
@@ -60,8 +61,9 @@ public class Users {
 				String email = st.nextToken().trim();;
 				String imagePath = st.nextToken().trim();
 				UserState state = UserState.parseString(st.nextToken().trim());
+				UserType type = UserType.parseString(st.nextToken().trim());
 					
-				User newUser = new User(username, password, name, surname, phoneNumber, email, imagePath, state);
+				User newUser = new User(username, password, name, surname, phoneNumber, email, imagePath, state, type);
 				users.add(newUser);
 			}
 		} catch (Exception ex) {
@@ -77,15 +79,15 @@ public class Users {
 		this.users.add(user);
 	}
 	
-	public boolean checkLoginValidation(User userToCheck) {
+	public User checkLoginValidation(User userToCheck) {
 		for (User user : users) {
 			if (user.getUsername().equals(userToCheck.getUsername()) &&
 					user.getPassword().equals(userToCheck.getPassword())) {
 				
-				return true;
+				return user;
 			}
 		}
 		
-		return false;
+		return null;
 	}
 }
