@@ -85,6 +85,10 @@ public class AuthService {
 			user.setState(UserState.NORMAL);
 			user.setImagePath("imagePath");
 			users.addUser(user);
+			
+			// Create session instantly, client will then redirect user to the home page
+			request.getSession().setAttribute("user-info", user);
+			
 			users.saveUsers();
 			return user;
 		}

@@ -12,14 +12,12 @@ Vue.component('registration', {
             },
             passwordAgain: null,
             selectedImage: null,
-            loggedUser: null,
-            userLoggedIn: false,
         }
     },
 
     template: 
     `
-    <div v-if="!userLoggedIn">
+    <div>
         <table>
             <h3>Popunite sledeća polja da bi ste se registrovali</h3>
             <tr><input type="text"     placeholder="Korisničko ime"   v-model="user.username"     /></tr>
@@ -32,10 +30,6 @@ Vue.component('registration', {
             <tr><input type="file"     accept="image/*"               v-on:change="onFileChanged" /></tr>
             <tr><input type="button"   value="Registruj se"           v-on:click="register()"     /></tr>
         </table>
-    </div>
-
-    <div v-else-if="userLoggedIn">
-        <home-page :user="loggedUser"></home-page>
     </div>
     `,
 
@@ -62,8 +56,6 @@ Vue.component('registration', {
                 if (response.data === '') { // user doesn't exists
                     toast('Greška prilikom registrovanja naloga. Korisničko ime je zauzeto.');
                 } else {
-                    this.loggedUser = response.data;
-
                     if (this.selectedImage != null) {
                         const formData = new FormData();
                         formData.append('username', this.user.username);
@@ -73,7 +65,7 @@ Vue.component('registration', {
                         .then(response => { this.selectedImage = null; });
                     }
 
-                    this.userLoggedIn = true;
+                    router.push('/');
                 }
             });
         },
