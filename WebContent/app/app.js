@@ -6,7 +6,7 @@ const router = new VueRouter({
     mode: 'hash',
     routes: [
         { path: '/', component: compLogin },
-        { path: '/registration', component: compRegistration }
+        { path: '/registration', component: compRegistration },
     ]
 });
 

@@ -4,17 +4,16 @@ import java.io.File;
 import java.io.InputStream;
 
 import javax.servlet.ServletContext;
-import javax.websocket.server.PathParam;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -27,6 +26,8 @@ import utils.Writer;
 @Path("/auth")
 public class AuthService {
 	
+	@Context
+	HttpServletRequest request;
 	@Context
 	ServletContext servletCtx;
 
@@ -43,12 +44,30 @@ public class AuthService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public User loginUser(User user) {
 		System.out.println("LOGIN: " + user);
-	
-		// @TODO: Don't forget Cookies ! There will be more stuff when we gather user info
-		// Probably we will need to send user info instead true/false
-		// or when home page loads we will send separate GET requests for info we need
+		
 		Users users = getUsers();
-		return users.checkLoginValidation(user);
+		
+		User fullUserInfo = (User) request.getSession().getAttribute("user-info");
+		if (fullUserInfo == null) {
+			fullUserInfo = users.checkLoginValidation(user);
+			
+			if (fullUserInfo == null) { // If user is not registered to the app
+				return null;
+			}
+			
+			// if it is then just add object to session and continue with login
+			request.getSession().setAttribute("user-info", fullUserInfo);
+		}
+		
+		return fullUserInfo;
+	}
+	
+	@GET
+	@Path("/getUserInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getUserInfo() {
+		User user = (User) request.getSession().getAttribute("user-info");
+		return user;
 	}
 	
 	@POST
@@ -105,6 +124,10 @@ public class AuthService {
 	    return uploadFileLocation;
 	}
 	
+	/**
+	 * Returns Users object from servlet context.
+	 * @return Users object
+	 */
 	private Users getUsers() {
 		Users users = (Users) servletCtx.getAttribute("users");
 		

@@ -63,7 +63,11 @@ Vue.component('login', {
     },
 
     mounted() {
-
+        axios.get('rest/auth/getUserInfo')
+        .then(response => {
+            this.loggedUser = response.data;
+            this.userLoggedIn = (response.data === '') ? false : true; 
+        });
     }
 
 });
