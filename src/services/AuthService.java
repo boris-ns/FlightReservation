@@ -70,6 +70,14 @@ public class AuthService {
 		return user;
 	}
 	
+	@GET
+	@Path("/logout")
+	public Response logout() {
+		// @TODO: maybe save all the data from user ? or saving will be done when anything happens
+		request.getSession().invalidate();
+		return Response.ok("OK").build();
+	}
+	
 	@POST
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
