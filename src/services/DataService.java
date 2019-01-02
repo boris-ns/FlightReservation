@@ -1,5 +1,4 @@
 package services;
-
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -77,5 +76,29 @@ public class DataService {
 		}
 
 		return Response.ok("User doesn't exist").build();
+	}
+	
+	@POST
+	@Path("/editUser")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public User editUser(User user) {
+		Users users = Data.getUsers(servletCtx);
+		User userToEdit = users.containsUsername(user.getUsername());
+		
+		if (userToEdit == null) {
+			return user;
+		}
+		
+		userToEdit.setUsername(user.getUsername());
+		userToEdit.setPassword(user.getPassword());
+		userToEdit.setName(user.getName());
+		userToEdit.setSurname(user.getSurname());
+		userToEdit.setPhoneNumber(user.getPhoneNumber());
+		userToEdit.setEmail(user.getEmail());
+		
+		users.saveUsers();
+		
+		return userToEdit;
 	}
 }

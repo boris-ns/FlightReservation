@@ -33,6 +33,18 @@ public class User {
 		this.type = type;
 	}
 	
+	public User(User user) {
+		this.username = user.username;
+		this.password = user.password;
+		this.name = user.name;
+		this.surname = user.surname;
+		this.phoneNumber = user.phoneNumber;
+		this.email = user.email;
+		this.imagePath = user.imagePath;
+		this.state = user.state;
+		this.type = user.type;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

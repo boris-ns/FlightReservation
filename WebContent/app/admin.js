@@ -18,13 +18,13 @@ Vue.component('admin-page', {
             <li><a href="#" v-on:click="showComponent('admin-all-users')">Korisnici</a></li>
             <li><a href="#" v-on:click="showComponent('admin-destinations')">Destinacije</a></li>
             <li><a href="#">Letovi</a></li>
-            <li><a href="#">Podešavanja</a></li>
+            <li><a href="#" v-on:click="showComponent('profile-settings')">Podešavanja</a></li>
             <li><a href="#" v-on:click="logout()">Logout</a></li>
         </ul>
-        
+
         <h1>Ovo je admin stranica</h1>
 
-        <component :is="currentComponent"></component>
+        <component :is="currentComponent" :user="user"></component>
 
     </div>
     `,
