@@ -33,6 +33,10 @@ public class Destination {
 				+ airportCode + ", location=" + location + ", imagePath=" + imagePath + ", state=" + state + "]";
 	}
 
+	public String toCsvString() {
+		return "";
+	}
+	
 	public String getName() {
 		return name;
 	}

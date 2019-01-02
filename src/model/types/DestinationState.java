@@ -7,7 +7,7 @@ public enum DestinationState {
 	public static DestinationState parseString(String value) {
 		switch (value.toUpperCase()) {
 		case "ACTIVE"   : return ACTIVE;
-		case "ARCHVIED" : return ARCHIVED;
+		case "ARCHIVED" : return ARCHIVED;
 		default         : return null;
 		}
 	}
