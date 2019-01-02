@@ -58,6 +58,10 @@ public class AuthService {
 			// if it is then just add object to session and continue with login
 			request.getSession().setAttribute("user-info", fullUserInfo);
 		}
+
+		if (fullUserInfo.getState() == UserState.BLOCKED) {
+			request.getSession().invalidate();
+		}
 		
 		return fullUserInfo;
 	}
@@ -73,7 +77,6 @@ public class AuthService {
 	@GET
 	@Path("/logout")
 	public Response logout() {
-		// @TODO: maybe save all the data from user ? or saving will be done when anything happens
 		request.getSession().invalidate();
 		return Response.ok("OK").build();
 	}
