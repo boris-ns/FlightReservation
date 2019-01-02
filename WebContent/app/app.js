@@ -1,7 +1,7 @@
 /* Components */
 const compLogin = { template: '<login></login>' };
 const compRegistration = { template: '<registration></registration>' };
-
+ 
 const router = new VueRouter({
     mode: 'hash',
     routes: [
