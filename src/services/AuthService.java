@@ -67,14 +67,6 @@ public class AuthService {
 	}
 	
 	@GET
-	@Path("/getUserInfo")
-	@Produces(MediaType.APPLICATION_JSON)
-	public User getUserInfo() {
-		User user = (User) request.getSession().getAttribute("user-info");
-		return user;
-	}
-	
-	@GET
 	@Path("/logout")
 	public Response logout() {
 		request.getSession().invalidate();

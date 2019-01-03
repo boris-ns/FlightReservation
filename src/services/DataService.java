@@ -1,4 +1,5 @@
 package services;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -11,6 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import model.User;
 import model.collections.Users;
@@ -31,6 +35,15 @@ public class DataService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String test() {
 		return "Hello data!";
+	}
+	
+
+	@GET
+	@Path("/getUserInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getUserInfo() {
+		User user = (User) request.getSession().getAttribute("user-info");
+		return user;
 	}
 	
 	@GET
@@ -101,4 +114,26 @@ public class DataService {
 		
 		return userToEdit;
 	}
+	
+//	@POST
+//	@Path("/register-image")
+//	@Consumes(MediaType.MULTIPART_FORM_DATA)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public User registerUser(	@FormDataParam("username") String username,
+//								@FormDataParam("file") InputStream inStream,
+//								@FormDataParam("file") FormDataContentDisposition fileDetail) {
+//		
+//		System.out.println("[EDIT-IMAGE-UPLOAD] " + username);
+//		Users users = getUsers();
+//		User user = users.containsUsername(username);
+//		
+//		if (user == null) {
+//			return null;
+//		} else {
+//			String imageLocation = saveImage(user.getUsername(), inStream, fileDetail);
+//			user.setImagePath(imageLocation);
+//			users.saveUsers();
+//			return user;
+//		}
+//	}
 }

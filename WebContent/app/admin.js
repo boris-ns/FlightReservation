@@ -38,7 +38,8 @@ Vue.component('admin-page', {
         /** Http request for logout */
         logout : function() {
     		axios.get('rest/auth/logout').then(response => router.go('/'));
-    	},
+        },
+        
     },
 
     mounted() {

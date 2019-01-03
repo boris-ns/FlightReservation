@@ -63,7 +63,7 @@ Vue.component('login', {
     },
 
     mounted() {
-        axios.get('rest/auth/getUserInfo')
+        axios.get('rest/data/getUserInfo')
         .then(response => {
             this.loggedUser = response.data;
             this.userLoggedIn = (response.data === '') ? false : true; 

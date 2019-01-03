@@ -1,14 +1,14 @@
 Vue.component('profile-settings', {
     data: function() {
         return {
-            // backup: {
-            //     username: null,
-            //     password: null,
-            //     name: null,
-            //     surname: null,
-            //     phoneNumber: null,
-            //     email: null,
-            // },
+            userInfo: {
+                username: null,
+                password: null,
+                name: null,
+                surname: null,
+                phoneNumber: null,
+                email: null
+            },
             oldPassword: null,
             newPassword: null,
             passwordAgain: null,
@@ -16,16 +16,12 @@ Vue.component('profile-settings', {
         }
     },
 
-    props: [
-        'user',
-    ],
-
     template:
     `
     <div>
         <h3>Podešavanja profila</h3>
         Korisničko ime
-        <input type="text" v-model="user.username" /><br />
+        <input type="text" v-model="userInfo.username" /><br />
         
         Stara lozinka
         <input type="password" v-model="oldPassword" /><br />
@@ -37,16 +33,16 @@ Vue.component('profile-settings', {
         <input type="password" v-model="passwordAgain" /><br />
         
         Ime
-        <input type="text" v-model="user.name" /><br />
+        <input type="text" v-model="userInfo.name" /><br />
         
         Prezime
-        <input type="text" v-model="user.surname" /><br />
+        <input type="text" v-model="userInfo.surname" /><br />
         
         Broj telefona
-        <input type="text" v-model="user.phoneNumber" /><br />
+        <input type="text" v-model="userInfo.phoneNumber" /><br />
         
         E-Mail
-        <input type="text" v-model="user.email" /><br />
+        <input type="text" v-model="userInfo.email" /><br />
         
         Profilna slika:
         <input type="file" accept="image/*" v-on:change="onFileChanged" /><br />
@@ -61,7 +57,7 @@ Vue.component('profile-settings', {
         },
 
         editProfile : function() {
-            if (this.oldPassword !== this.user.password) {
+            if (this.oldPassword !== this.userInfo.password) {
                 toast('Stara lozinka koju ste uneli nije ispravna!');
                 return;
             }
@@ -72,21 +68,21 @@ Vue.component('profile-settings', {
             }
 
             if (this.newPassword !== null) {
-                this.user.password = this.newPassword;
+                this.userInfo.password = this.newPassword;
             }
 
-            axios.post('rest/data/editUser', this.user)
+            axios.post('rest/data/editUser', this.userInfo)
             .then(response => {
                 if (response.data === '') { // user doesn't exists
                     toast('Greška prilikom izmene podataka. Pokušajte kasnije.');
                 } else {
+                    toast('Vaš profil je uspešno izmenjen')
                     if (this.selectedImage != null) {
                         const formData = new FormData();
-                        formData.append('username', this.user.username);
+                        formData.append('username', this.userInfo.username);
                         formData.append('file', this.selectedImage, this.selectedImage.name);
                         
-                        // @TODO change this path, also create ednpoint in service for changing this image
-                        axios.post('rest/auth/register-image/', formData)
+                        axios.post('rest/data/register-image/', formData)
                         .then(response => { this.selectedImage = null; });
                     }
                 }
@@ -95,6 +91,6 @@ Vue.component('profile-settings', {
     },
 
     mounted() {
-        // this.backup = Object.assign({}, this.user);
+        axios.get('rest/data/getUserInfo').then(response => this.userInfo = response.data);
     }
 });
