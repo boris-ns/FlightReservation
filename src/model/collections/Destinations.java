@@ -86,4 +86,8 @@ public class Destinations {
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<Destination> getDestinations() {
+		return this.destinations;
+	}
 }

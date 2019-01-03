@@ -16,7 +16,9 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import model.Destination;
 import model.User;
+import model.collections.Destinations;
 import model.collections.Users;
 import model.types.UserState;
 import model.types.UserType;
@@ -58,6 +60,14 @@ public class DataService {
 		}
 		
 		return new ArrayList<User>();
+	}
+	
+	@GET
+	@Path("/getAllDestinations")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Destination> getAllDestinations() {
+		Destinations dest = Data.getDestinations(servletCtx);
+		return dest.getDestinations();
 	}
 	
 	@POST

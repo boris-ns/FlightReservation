@@ -1,9 +1,8 @@
 package services;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
 
+import model.collections.Destinations;
 import model.collections.Users;
 
 public class Data {
@@ -17,5 +16,16 @@ public class Data {
 		}
 		
 		return users;
+	}
+	
+	public static Destinations getDestinations(ServletContext sCtx) {
+		Destinations destinations = (Destinations) sCtx.getAttribute("destinations");
+		
+		if (destinations == null) {
+			destinations = new Destinations();
+			sCtx.setAttribute("destinations", destinations);
+		}
+		
+		return destinations;
 	}
 }

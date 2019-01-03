@@ -1,7 +1,7 @@
 Vue.component('admin-all-users', {
     data: function() {
         return {
-            users: null,
+            users: [],
         }
     },
 
