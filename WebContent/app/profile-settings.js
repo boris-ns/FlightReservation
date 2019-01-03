@@ -76,15 +76,16 @@ Vue.component('profile-settings', {
                 if (response.data === '') { // user doesn't exists
                     toast('Greška prilikom izmene podataka. Pokušajte kasnije.');
                 } else {
-                    toast('Vaš profil je uspešno izmenjen')
                     if (this.selectedImage != null) {
                         const formData = new FormData();
                         formData.append('username', this.userInfo.username);
                         formData.append('file', this.selectedImage, this.selectedImage.name);
                         
-                        axios.post('rest/data/register-image/', formData)
+                        axios.post('rest/data/editUserImage/', formData)
                         .then(response => { this.selectedImage = null; });
                     }
+
+                    toast('Vaš profil je uspešno izmenjen');
                 }
             });
         },

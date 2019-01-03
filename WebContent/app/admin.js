@@ -12,7 +12,9 @@ Vue.component('admin-page', {
     template:
     `
     <div>
-        
+
+        <img :src="user.imagePath" alt="Profilna slika nedostupna" />
+
         <ul>
             <li>Admin: {{user.name}} {{user.surname}}</li> 
             <li><a href="#" v-on:click="showComponent('admin-all-users')">Korisnici</a></li>

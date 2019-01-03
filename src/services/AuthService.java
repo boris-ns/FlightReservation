@@ -1,6 +1,5 @@
 package services;
 
-import java.io.File;
 import java.io.InputStream;
 
 import javax.servlet.ServletContext;
@@ -21,7 +20,7 @@ import model.User;
 import model.collections.Users;
 import model.types.UserState;
 import model.types.UserType;
-import utils.Writer;
+import utils.ImageWriter;
 
 @Path("/auth")
 public class AuthService {
@@ -112,24 +111,14 @@ public class AuthService {
 		if (user == null) {
 			return null;
 		} else {
-			String imageLocation = saveImage(user.getUsername(), inStream, fileDetail);
+			String imageLocation = ImageWriter.saveImage(user.getUsername(), inStream, fileDetail);
 			user.setImagePath(imageLocation);
 			users.saveUsers();
 			return user;
 		}
 	}
 	
-	private String saveImage(String username, InputStream inStream, FormDataContentDisposition fileDetail) {
-		String uploadFileLocation = "D:\\dev\\frserver\\images\\";
-		
-		File file = new File(uploadFileLocation + "\\" + username);
-		file.mkdir();
-		
-		String fileLocation = uploadFileLocation + "\\" + username + "\\" + fileDetail.getFileName();
-	    Writer.saveImageToFile(inStream, fileLocation);
-	    
-	    return uploadFileLocation;
-	}
+	
 	
 	/**
 	 * Returns Users object from servlet context.

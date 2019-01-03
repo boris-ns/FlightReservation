@@ -20,6 +20,7 @@ import model.User;
 import model.collections.Users;
 import model.types.UserState;
 import model.types.UserType;
+import utils.ImageWriter;
 
 @Path("/data")
 public class DataService {
@@ -115,25 +116,25 @@ public class DataService {
 		return userToEdit;
 	}
 	
-//	@POST
-//	@Path("/register-image")
-//	@Consumes(MediaType.MULTIPART_FORM_DATA)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public User registerUser(	@FormDataParam("username") String username,
-//								@FormDataParam("file") InputStream inStream,
-//								@FormDataParam("file") FormDataContentDisposition fileDetail) {
-//		
-//		System.out.println("[EDIT-IMAGE-UPLOAD] " + username);
-//		Users users = getUsers();
-//		User user = users.containsUsername(username);
-//		
-//		if (user == null) {
-//			return null;
-//		} else {
-//			String imageLocation = saveImage(user.getUsername(), inStream, fileDetail);
-//			user.setImagePath(imageLocation);
-//			users.saveUsers();
-//			return user;
-//		}
-//	}
+	@POST
+	@Path("/editUserImage")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public User registerUser(	@FormDataParam("username") String username,
+								@FormDataParam("file") InputStream inStream,
+								@FormDataParam("file") FormDataContentDisposition fileDetail) {
+		
+		System.out.println("[EDIT-IMAGE-UPLOAD] " + username);
+		Users users = Data.getUsers(servletCtx);
+		User user = users.containsUsername(username);
+		
+		if (user == null) {
+			return null;
+		} else {
+			String imageLocation = ImageWriter.saveImage(user.getUsername(), inStream, fileDetail);
+			user.setImagePath(imageLocation);
+			users.saveUsers();
+			return user;
+		}
+	}
 }
