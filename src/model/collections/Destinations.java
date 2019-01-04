@@ -90,4 +90,14 @@ public class Destinations {
 	public ArrayList<Destination> getDestinations() {
 		return this.destinations;
 	}
+	
+	public Destination findDestination(String destName) {
+		for (Destination dest : destinations) {
+			if (dest.getName().equals(destName)) {
+				return dest;
+			}
+		}
+		
+		return null;
+	}
 }

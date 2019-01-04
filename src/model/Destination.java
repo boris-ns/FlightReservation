@@ -34,7 +34,7 @@ public class Destination {
 	}
 
 	public String toCsvString() {
-		return "";
+		return name + "," + country + "," + airportName + "," + airportCode + "," + location + "," + imagePath + "," + state;
 	}
 	
 	public String getName() {

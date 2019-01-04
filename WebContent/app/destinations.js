@@ -17,6 +17,7 @@ Vue.component('admin-destinations', {
                 <th>Naziv aerodroma</th>
                 <th>Kod aerodroma</th>
                 <th>Stanje</th>
+                <th>Promeni stanje</th>
             </tr>
 
             <tr v-for="dest in destinations">
@@ -26,6 +27,10 @@ Vue.component('admin-destinations', {
                 <td>{{dest.airportName}}</td>
                 <td>{{dest.airportCode}}</td>
                 <td>{{dest.state}}</td>
+
+                <td>
+                    <input type="button" value="Promeni" v-on:click="changeDestinationState(dest)" />
+                </td>
             </tr>
         </table>
     
@@ -37,6 +42,18 @@ Vue.component('admin-destinations', {
             axios.get('rest/data/getAllDestinations').then(response => this.destinations = response.data);
         },
 
+        changeDestinationState : function(destination) {
+            axios.post('rest/data/changeDestinationState', destination)
+            .then(response => { 
+                if (response.data) {
+                    destination.state = response.data.state;
+                }
+            });
+        },
+
+        activateDestination : function(destinatinoName) {
+
+        }
 
     },
 

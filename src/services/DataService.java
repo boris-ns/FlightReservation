@@ -20,6 +20,7 @@ import model.Destination;
 import model.User;
 import model.collections.Destinations;
 import model.collections.Users;
+import model.types.DestinationState;
 import model.types.UserState;
 import model.types.UserType;
 import utils.ImageWriter;
@@ -147,4 +148,24 @@ public class DataService {
 			return user;
 		}
 	}
+	
+	@POST
+	@Path("/changeDestinationState")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Destination archvieDestination(Destination destination) {
+		Destinations dests = Data.getDestinations(servletCtx);
+		Destination dest = dests.findDestination(destination.getName());
+		
+		if (dest != null) {
+			DestinationState newState = (destination.getState() == DestinationState.ACTIVE) ? DestinationState.ARCHIVED : DestinationState.ACTIVE; 
+			dest.setState(newState);
+			dests.saveDestinations();
+			return dest;
+		}
+
+		return null;
+	}
+	
+	
 }
