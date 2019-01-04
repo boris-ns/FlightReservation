@@ -2,12 +2,33 @@ Vue.component('admin-destinations', {
     data: function() {
         return {
             destinations: [],
+            destToAdd: {
+                name: null,
+                country: null,
+                airportName: null,
+                airportCode: null,
+                location: null,
+            },
         }
     },
 
     template:
     `
     <div>
+        <input type="button" value="Dodavanje destinacije" v-on:click="showAddDestComponent()" />
+        <div id="addDestination">
+            <p>Popunite sledeća polja za unos destinacije</p>
+            
+            <table>
+                <tr><input type="text"    placeholder="Naziv"            v-model="destToAdd.name"        /></tr>
+                <tr><input type="text"    placeholder="Država"           v-model="destToAdd.country"     /></tr>
+                <tr><input type="text"    placeholder="Naziv aerodroma"  v-model="destToAdd.airportName" /></tr>
+                <tr><input type="text"    placeholder="Kod aerodroma"    v-model="destToAdd.airportCode" /></tr>
+                <tr><input type="text"    placeholder="Lokacija"         v-model="destToAdd.location"    /></tr>
+                <tr><input type="file"    accept="image/*"               v-on:change="onFileChanged"     /></tr>
+                <tr><input type="button"  value="Dodaj"      v-on:click="addDestination()"   /></tr>
+            </table>
+        </div>
 
         <table>
             <tr>
@@ -51,7 +72,15 @@ Vue.component('admin-destinations', {
             });
         },
 
-        activateDestination : function(destinatinoName) {
+        showAddDestComponent : function() {
+            $('#addDestination').toggle();
+        },
+
+        onFileChanged : function(event) {
+
+        },
+
+        addDestination : function() {
 
         }
 
@@ -59,5 +88,6 @@ Vue.component('admin-destinations', {
 
     mounted() {
         this.getAllDestinations();
+        $('#addDestination').hide();
     }
 });
