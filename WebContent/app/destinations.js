@@ -99,10 +99,11 @@ Vue.component('admin-destinations', {
                     formData.append('file', this.selectedImage, this.selectedImage.name);
                     
                     axios.post('rest/data/addImageForDestination', formData)
-                    .then(response => { this.selectedImage = null; });
+                    .then(response => { 
+                        this.selectedImage = null;
+                        this.destinations.push(response.data);
+                    });
                 }
-
-                this.destinations.push(response.data);
             });
         },
 
@@ -122,11 +123,10 @@ Vue.component('admin-destinations', {
             } else if (this.destToAdd.location == null || this.destToAdd.location.trim() === '') {
                 toast('Morate uneti koordinate destinacije.');
                 return false;
+            } else if (this.selectedImage == null) {
+                toast('Morate odabrati sliku destinacije.');
+                return false;
             }
-            // } else if (this.selectedImage == null) {
-            //     toast('Morate odabrati sliku destinacije.');
-            //     return false;
-            // }
 
             return true;
         },

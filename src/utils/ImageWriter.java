@@ -10,16 +10,14 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 public class ImageWriter {
 
-	public static String saveImage(String username, InputStream inStream, FormDataContentDisposition fileDetail) {
-		String uploadFileLocation = "D:/dev/frserver/images";
+	public static String saveImage(String folderLocation, InputStream inStream, FormDataContentDisposition fileDetail) {
+		File folder = new File(folderLocation);
+		folder.mkdir();
 		
-		File file = new File(uploadFileLocation + "/" + username);
-		file.mkdir();
-		
-		String fileLocation = uploadFileLocation + "/" + username + "/" + fileDetail.getFileName();
-	    ImageWriter.saveImageToFile(inStream, fileLocation);
+		String fullFilePath = folderLocation + "/" + fileDetail.getFileName();
+	    ImageWriter.saveImageToFile(inStream, fullFilePath);
 	    
-	    return fileLocation;
+	    return fullFilePath;
 	}
 	
 	private static void saveImageToFile(InputStream uploadedInputStream, String uploadedFileLocation) {

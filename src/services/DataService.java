@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import common.Consts;
 import model.Destination;
 import model.User;
 import model.collections.Destinations;
@@ -194,19 +195,17 @@ public class DataService {
 											  @FormDataParam("file") InputStream inStream,
 											  @FormDataParam("file") FormDataContentDisposition fileDetail) {
 		
-		
-		// TODO: Rewrite saveImage method. Change first parameter to be location! So the method who
-		// calls it needs to worry where image will be saved. This way method i meant to be saving only images for users.
-		
 		Destinations dests = Data.getDestinations(servletCtx);
 		Destination dest = dests.findDestination(name);
 		
 		if (dest == null) {
 			return null;
 		} else {
-			String imageLocation = ImageWriter.saveImage(dest.getName(), inStream, fileDetail);
-			dest.setImagePath(imageLocation);
+			String imageLocation = Consts.destinationsImgLocation + "/" + name;
+			String fullImageLocation = ImageWriter.saveImage(imageLocation, inStream, fileDetail);
+			dest.setImagePath(fullImageLocation);
 			dests.saveDestinations();
+			
 			return dest;
 		}
 	}
