@@ -18,6 +18,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import common.Consts;
 import model.Destination;
+import model.DestinationToEdit;
 import model.User;
 import model.collections.Destinations;
 import model.collections.Users;
@@ -209,5 +210,28 @@ public class DataService {
 			
 			return dest;
 		}
+	}
+	
+	@POST
+	@Path("/editDestination")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Destination editDestination(DestinationToEdit destination) {
+		Destinations dests = Data.getDestinations(servletCtx);
+		Destination destToEdit = dests.findDestination(destination.getOldName());
+		
+		if (destToEdit == null) {
+			return null;
+		}
+
+		destToEdit.setName(destination.getName());
+		destToEdit.setCountry(destination.getCountry());
+		destToEdit.setAirportName(destination.getAirportName());
+		destToEdit.setAirportCode(destination.getAirportCode());
+		destToEdit.setLocation(destination.getLocation());
+		
+		dests.saveDestinations();
+			
+		return destToEdit;
 	}
 }

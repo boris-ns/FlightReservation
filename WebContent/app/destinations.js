@@ -10,6 +10,14 @@ Vue.component('admin-destinations', {
                 location: null,
             },
             selectedImage: null,
+            backupDest: {
+                name: null,
+                country: null,
+                airportName: null,
+                airportCode: null,
+                location: null,
+            },
+            editingEnabled: false,
         }
     },
 
@@ -31,6 +39,19 @@ Vue.component('admin-destinations', {
             </table>
         </div>
 
+        <div id="editDestinationForm">
+            <table>
+                <tr><input type="text"    placeholder="Naziv"           v-model="backupDest.name"        /></tr>
+                <tr><input type="text"    placeholder="Država"          v-model="backupDest.country"     /></tr>
+                <tr><input type="text"    placeholder="Naziv aerodroma" v-model="backupDest.airportName" /></tr>
+                <tr><input type="text"    placeholder="Kod aerodroma"   v-model="backupDest.airportCode" /></tr>
+                <tr><input type="text"    placeholder="Lokacija"        v-model="backupDest.location"    /></tr>
+                <tr><input type="file"    accept="image/*"              v-on:change="onFileChanged"     /></tr>
+                <tr><input type="button"  value="Izmeni"  v-on:click="editDestination()" /></tr>
+                <tr><input type="button"  value="Poništi" v-on:click="cancelEdit()" /></tr>
+            </table>
+        </div>
+
         <table>
             <tr>
                 <th>Slika</th>
@@ -40,6 +61,7 @@ Vue.component('admin-destinations', {
                 <th>Kod aerodroma</th>
                 <th>Stanje</th>
                 <th>Promeni stanje</th>
+                <th>Izmena</th>
             </tr>
 
             <tr v-for="dest in destinations">
@@ -52,6 +74,9 @@ Vue.component('admin-destinations', {
 
                 <td>
                     <input type="button" value="Promeni" v-on:click="changeDestinationState(dest)" />
+                </td>
+                <td>
+                    <input type="button" value="Izmeni" v-on:click="onClickEdit(dest)" />
                 </td>
             </tr>
         </table>
@@ -131,10 +156,64 @@ Vue.component('admin-destinations', {
             return true;
         },
 
+        onClickEdit : function(destToEdit) {
+            if (this.editingEnabled) {
+                toast('Ne možete menjati informicije o 2 destinacije istovremeno.');
+                return;
+            }
+
+            this.editingEnabled = true;
+            this.backupDest = Object.assign({}, destToEdit);
+            this.backupDest.oldName = this.backupDest.name;
+
+            $('#editDestinationForm').show();
+        },
+
+        editDestination : function() {
+            axios.post('rest/data/editDestination', this.backupDest, "NEKOIME")
+            .then(response => {
+                if (response.data === '') {
+                    toast('Došlo je do greške prilikom izmene destinacije.');
+                    return;
+                }
+                
+                let destToEdit = this.destinations.find(obj => obj.name === this.backupDest.oldName);
+                this.copyDataIntoObject(destToEdit, response.data);
+
+                if (this.selectedImage != null) {
+                    const formData = new FormData();
+                    formData.append('name', this.backupDest.name);
+                    formData.append('file', this.selectedImage, this.selectedImage.name);
+                    
+                    axios.post('rest/data/addImageForDestination', formData)
+                    .then(response => { 
+                        this.selectedImage = null;
+                        destToEdit.imagePath = response.data.imagePath;
+                    });
+                }
+            });
+
+            $('#editDestinationForm').hide();
+            this.editingEnabled = false;
+        },
+
+        cancelEdit : function() {
+            $('#editDestinationForm').hide();
+            this.editingEnabled = false;
+        },
+
+        copyDataIntoObject : function(toObj, fromObj) {
+            toObj.name = fromObj.name;
+            toObj.country = fromObj.country;
+            toObj.airportCode = fromObj.airportCode;
+            toObj.airportName = fromObj.airportName;
+            toObj.location = fromObj.location;
+        }
     },
 
     mounted() {
         this.getAllDestinations();
         $('#addDestination').hide();
+        $('#editDestinationForm').hide();
     }
 });
