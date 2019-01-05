@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import common.Consts;
 import model.User;
 import model.collections.Users;
 import model.types.UserState;
@@ -111,7 +112,8 @@ public class AuthService {
 		if (user == null) {
 			return null;
 		} else {
-			String imageLocation = ImageWriter.saveImage(user.getUsername(), inStream, fileDetail);
+			String location = Consts.usersImgLocation + "/" + user.getUsername();
+			String imageLocation = ImageWriter.saveImage(location, inStream, fileDetail);
 			user.setImagePath(imageLocation);
 			users.saveUsers();
 			return user;

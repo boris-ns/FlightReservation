@@ -143,7 +143,8 @@ public class DataService {
 		if (user == null) {
 			return null;
 		} else {
-			String imageLocation = ImageWriter.saveImage(user.getUsername(), inStream, fileDetail);
+			String location = Consts.usersImgLocation + "/" + user.getUsername();
+			String imageLocation = ImageWriter.saveImage(location, inStream, fileDetail);
 			user.setImagePath(imageLocation);
 			users.saveUsers();
 			return user;
