@@ -9,6 +9,7 @@ Vue.component('admin-destinations', {
                 airportCode: null,
                 location: null,
             },
+            selectedImage: null,
         }
     },
 
@@ -77,12 +78,58 @@ Vue.component('admin-destinations', {
         },
 
         onFileChanged : function(event) {
-
+            this.selectedImage = event.target.files[0];
         },
 
         addDestination : function() {
+            if (!this.checkInputFields()) {
+                return;
+            }
 
-        }
+            axios.post('rest/data/addDestination', this.destToAdd)
+            .then(response => {
+                if (response.data == '') {
+                    toast('Destinacija već postoji u sistemu.');
+                    return;
+                }
+
+                if (this.selectedImage != null) {
+                    const formData = new FormData();
+                    formData.append('name', this.destToAdd.name);
+                    formData.append('file', this.selectedImage, this.selectedImage.name);
+                    
+                    axios.post('rest/data/addImageForDestination', formData)
+                    .then(response => { this.selectedImage = null; });
+                }
+
+                this.destinations.push(response.data);
+            });
+        },
+
+        checkInputFields : function() {
+            if (this.destToAdd.name == null || this.destToAdd.name.trim() === '') {
+                toast('Morate uneti naziv destinacije.');
+                return false;
+            } else if (this.destToAdd.country == null || this.destToAdd.country.trim() === '') {
+                toast('Morate uneti državu.');
+                return false;
+            } else if (this.destToAdd.airportName == null || this.destToAdd.airportName.trim() === '') {
+                toast('Morate uneti naziv aerodroma.');
+                return false;
+            } else if (this.destToAdd.airportCode == null || this.destToAdd.airportCode.trim() === '') {
+                toast('Morate uneti kod aerodroma.');
+                return false;
+            } else if (this.destToAdd.location == null || this.destToAdd.location.trim() === '') {
+                toast('Morate uneti koordinate destinacije.');
+                return false;
+            }
+            // } else if (this.selectedImage == null) {
+            //     toast('Morate odabrati sliku destinacije.');
+            //     return false;
+            // }
+
+            return true;
+        },
 
     },
 

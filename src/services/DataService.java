@@ -167,5 +167,47 @@ public class DataService {
 		return null;
 	}
 	
+	@POST
+	@Path("addDestination")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Destination addDestination(Destination destination) {
+		Destinations dests = Data.getDestinations(servletCtx);
+		
+		if (dests.findDestination(destination.getName()) == null) {
+			destination.setState(DestinationState.ACTIVE);
+			destination.setImagePath("imagePath");
+			dests.addDestination(destination);
+			dests.saveDestinations();
+			
+			return destination;
+		}
+		
+		return null;
+	}
 	
+	@POST
+	@Path("/addImageForDestination")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Destination addImageForDestination(@FormDataParam("name") String name,
+											  @FormDataParam("file") InputStream inStream,
+											  @FormDataParam("file") FormDataContentDisposition fileDetail) {
+		
+		
+		// TODO: Rewrite saveImage method. Change first parameter to be location! So the method who
+		// calls it needs to worry where image will be saved. This way method i meant to be saving only images for users.
+		
+		Destinations dests = Data.getDestinations(servletCtx);
+		Destination dest = dests.findDestination(name);
+		
+		if (dest == null) {
+			return null;
+		} else {
+			String imageLocation = ImageWriter.saveImage(dest.getName(), inStream, fileDetail);
+			dest.setImagePath(imageLocation);
+			dests.saveDestinations();
+			return dest;
+		}
+	}
 }

@@ -87,6 +87,10 @@ public class Destinations {
 		}
 	}
 	
+	public void addDestination(Destination dest) {
+		this.destinations.add(dest);
+	}
+	
 	public ArrayList<Destination> getDestinations() {
 		return this.destinations;
 	}
