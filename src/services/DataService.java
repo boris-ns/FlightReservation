@@ -19,8 +19,10 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import common.Consts;
 import model.Destination;
 import model.DestinationToEdit;
+import model.Flight;
 import model.User;
 import model.collections.Destinations;
+import model.collections.Flights;
 import model.collections.Users;
 import model.types.DestinationState;
 import model.types.UserState;
@@ -233,5 +235,13 @@ public class DataService {
 		dests.saveDestinations();
 			
 		return destToEdit;
+	}
+	
+	@GET
+	@Path("/getAllFlights")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Flight> getAllFlights() {
+		Flights flights = Data.getFlights(servletCtx);
+		return flights.getFlights();
 	}
 }

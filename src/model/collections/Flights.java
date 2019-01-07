@@ -58,7 +58,7 @@ public class Flights {
 					continue;
 				
 				st = new StringTokenizer(line, ",");
-				
+
 				String flightId = st.nextToken().trim();
 				
 				String startDestAirportCode = st.nextToken().trim();
@@ -66,9 +66,13 @@ public class Flights {
 				
 				String endDestAirportCode = st.nextToken().trim();
 				Destination endDest = destinations.findDestinationByAirportCode(endDestAirportCode);
-				
-				String reservationsIds = st.nextToken().trim();
-				ArrayList<Reservation> reservs = getReservations(reservationsIds, reservations);
+
+				// If there are 11 elements in one CSV line that means there are reservations for this flight
+				ArrayList<Reservation> reservs = new ArrayList<Reservation>();
+				if (st.countTokens() == 11) {
+					String reservationsIds = st.nextToken().trim();
+					reservs = getReservations(reservationsIds, reservations);
+				}
 				
 				float ticketPrice = Float.parseFloat(st.nextToken().trim());
 				String airplaneModel = st.nextToken().trim();

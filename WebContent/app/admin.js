@@ -19,7 +19,7 @@ Vue.component('admin-page', {
             <li>Admin: {{user.name}} {{user.surname}}</li> 
             <li><a href="#" v-on:click="showComponent('admin-all-users')">Korisnici</a></li>
             <li><a href="#" v-on:click="showComponent('admin-destinations')">Destinacije</a></li>
-            <li><a href="#">Letovi</a></li>
+            <li><a href="#" v-on:click="showComponent('admin-flights')">Letovi</a></li>
             <li><a href="#" v-on:click="showComponent('profile-settings')">Podešavanja</a></li>
             <li><a href="#" v-on:click="logout()">Logout</a></li>
         </ul>
