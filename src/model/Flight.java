@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -47,6 +48,25 @@ public class Flight {
 				+ ", numFirstClassSeats=" + numFirstClassSeats + ", numBussinessClassSeats=" + numBussinessClassSeats
 				+ ", numEconomyClassSeats=" + numEconomyClassSeats + ", flightDate=" + flightDate + ", flightClass="
 				+ flightClass + "]";
+	}
+	
+	public String toCsvString() {
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy.");
+        String dateStr = formatter.format(flightDate);
+		
+		sb.append(flightId + "," + startDest.getAirportCode() + "," + endDest.getAirportCode() + ",");
+		
+		for (Reservation reservation : reservations) {
+			sb.append(reservation.getReservationId() + ";");
+		}
+		
+		sb.deleteCharAt(sb.length() - 1); // Delete last ';'
+		sb.append(",");
+		sb.append(ticketPrice + "," + airplaneModel + "," + numFirstClassSeats + "," + numBussinessClassSeats + "," + numEconomyClassSeats
+				 + "," + dateStr + "," + flightClass);
+		
+		return sb.toString();
 	}
 
 	public String getFlightId() {

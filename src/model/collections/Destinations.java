@@ -104,4 +104,14 @@ public class Destinations {
 		
 		return null;
 	}
+	
+	public Destination findDestinationByAirportCode(String code) {
+		for (Destination dest : destinations) {
+			if (dest.getAirportCode().equals(code)) {
+				return dest;
+			}
+		}
+		
+		return null;
+	}
 }

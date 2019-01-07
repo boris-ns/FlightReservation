@@ -3,6 +3,8 @@ package services;
 import javax.servlet.ServletContext;
 
 import model.collections.Destinations;
+import model.collections.Flights;
+import model.collections.Reservations;
 import model.collections.Users;
 
 public class Data {
@@ -27,5 +29,31 @@ public class Data {
 		}
 		
 		return destinations;
+	}
+	
+	public static Reservations getReservations(ServletContext sCtx) {
+		Reservations reservations = (Reservations) sCtx.getAttribute("reservations");
+		
+		if (reservations == null) {
+			Users users = getUsers(sCtx);
+			reservations = new Reservations(users);
+			sCtx.setAttribute("reservations", reservations);
+		}
+		
+		return reservations;
+	}
+
+	public static Flights getFlights(ServletContext sCtx) {
+		Flights flights = (Flights) sCtx.getAttribute("flights");
+		
+		if (flights == null) {
+			Destinations destinations = getDestinations(sCtx);
+			Reservations reservations = getReservations(sCtx);
+			
+			flights = new Flights(destinations, reservations);
+			sCtx.setAttribute("flights", flights);
+		}
+		
+		return flights;
 	}
 }

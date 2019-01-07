@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import model.types.ReservationClass;
@@ -27,6 +28,13 @@ public class Reservation {
 	public String toString() {
 		return "Reservation [reservationId=" + reservationId + ", user=" + user + ", dateTime=" + dateTime
 				+ ", reservationClass=" + reservationClass + ", numberOfPassengers=" + numberOfPassengers + "]";
+	}
+	
+	public String toCsvString() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
+        String dateTimeStr = formatter.format(dateTime);
+        
+		return reservationId + "," + user.getUsername() + "," + dateTimeStr + "," + reservationClass + "," + numberOfPassengers;
 	}
 
 	public int getReservationId() {
