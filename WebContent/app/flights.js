@@ -2,12 +2,67 @@ Vue.component('admin-flights', {
     data: function() {
         return {
             flights: [],
+            flightToAdd: {
+                flightId: null,
+                startDest: null,
+                endDest: null,
+                reservations: [],
+                ticketPrice: null,
+                airplaneModel: null,
+                numFirstClassSeats: null,
+                numBussinessClassSeats: null,
+                numEconomyClassSeats: null,
+                flightDate: null,
+                flightClass: null,
+            },
+            destinations: [],
         }
     },
 
     template:
     `
     <div>
+        <input type="button" value="Dodavanje leta" v-on:click="toggleFlightComponent()" />
+        <div id="addFlight">
+            <p>Popunite sledeća polja za unos leta</p>
+            
+            <table>
+                <tr><input type="text"   placeholder="Broj leta (ID)" v-model="flightToAdd.flightId" /></tr>
+                
+                <tr>
+                    Početna destinacija
+                    <select v-model="flightToAdd.startDest">
+                    <option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+                    </select>
+                </tr>
+
+                <tr>
+                    Krajnja destinacija:
+                    <select v-model="flightToAdd.endDest">
+                    <option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+                    </select>
+                </tr>
+
+                <tr><input type="number" placeholder="Cena karte"                    v-model="flightToAdd.ticketPrice"            min="0" /></tr>
+                <tr><input type="text"   placeholder="Model aviona"                  v-model="flightToAdd.airplaneModel"          /></tr>
+                <tr><input type="number" placeholder="Broj mesta u prvoj klasi"      v-model="flightToAdd.numFirstClassSeats"     min="0" /></tr>
+                <tr><input type="number" placeholder="Broj mesta u biznis klasi"     v-model="flightToAdd.numBussinessClassSeats" min="0" /></tr>
+                <tr><input type="number" placeholder="Broj mesta u ekonomskoj klasi" v-model="flightToAdd.numEconomyClassSeats"   min="0" /></tr>
+                <tr><input type="date"   placeholder="Datum leta"                    v-model="flightToAdd.flightDate"             /></tr>
+
+                <tr>
+                    Klasa leta:
+                    <select v-model="flightToAdd.flightClass">
+                        <option value="CHARTER">Čarter</option>
+                        <option value="REGIONAL">Regionalni</option>
+                        <option value="OVERSEAS">Prekookeanski</option>
+                    </select>
+                </tr>
+                
+                <tr><input type="button" value="Dodaj" v-on:click="addFlight()" /></tr>
+            </table>
+        </div>
+
         <h3>Spisak svih letova</h3>
 
         <table>
@@ -58,10 +113,34 @@ Vue.component('admin-flights', {
         convertDate : function(milliseconds) {
             let date = new Date(milliseconds);
             return date.toDateString();
-        }
+        },
+
+        toggleFlightComponent : function() {
+            $('#addFlight').toggle();
+        },
+
+        addFlight : function() {
+            axios.post('rest/data/addFlight', this.flightToAdd)
+            .then(response => {
+                if (response.data === '') {
+                    toast('Greška prilikom dodavanja leta');
+                    return;
+                }
+
+                this.flights.push(this.flightToAdd);
+                this.toggleFlightComponent();
+            });
+
+        },
+
+        getAllDestinations : function() {
+            axios.get('rest/data/getAllDestinations').then(response => this.destinations = response.data);
+        },
     },
 
     mounted() {
+        this.getAllDestinations();
         this.getAllFlights();
+        $('#addFlight').hide();
     }
 });

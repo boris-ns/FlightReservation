@@ -244,4 +244,30 @@ public class DataService {
 		Flights flights = Data.getFlights(servletCtx);
 		return flights.getFlights();
 	}
+	
+	@POST
+	@Path("/addFlight")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Flight addFlight(Flight flightToAdd) {
+		System.out.println(flightToAdd);
+		
+		Flights flights = Data.getFlights(servletCtx);
+		
+		if (flights.findFlight(flightToAdd.getFlightId()) == null) {
+			Destinations destinations = Data.getDestinations(servletCtx);
+			Destination startDest = destinations.findDestinationByAirportCode(flightToAdd.getStartDest().getAirportCode());
+			Destination endDest = destinations.findDestinationByAirportCode(flightToAdd.getEndDest().getAirportCode());
+
+			if (startDest == null || endDest == null) {
+				return null;
+			}
+			
+			flights.addFlight(flightToAdd);
+			flights.saveFlights();
+			
+			return flightToAdd;
+		}
+		
+		return null;
+	}
 }

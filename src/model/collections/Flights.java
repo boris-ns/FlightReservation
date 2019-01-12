@@ -112,7 +112,7 @@ public class Flights {
 		return reservs;
 	}
 	
-	public void saveDestinations() {
+	public void saveFlights() {
 		try {
 			PrintWriter writer = new PrintWriter(flightsFileLocation);
 			
@@ -132,5 +132,15 @@ public class Flights {
 	
 	public ArrayList<Flight> getFlights() {
 		return this.flights;
+	}
+	
+	public Flight findFlight(String flightId) {
+		for (Flight flight : flights) {
+			if (flight.getFlightId().equals(flightId)) {
+				return flight;
+			}
+		}
+		
+		return null;
 	}
 }

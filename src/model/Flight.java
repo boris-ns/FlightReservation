@@ -60,8 +60,11 @@ public class Flight {
 		for (Reservation reservation : reservations) {
 			sb.append(reservation.getReservationId() + ";");
 		}
-		
-		sb.deleteCharAt(sb.length() - 1); // Delete last ';'
+
+		if (reservations.size() != 0) {
+			sb.deleteCharAt(sb.length() - 1); // Delete last ';'
+		}
+
 		sb.append(",");
 		sb.append(ticketPrice + "," + airplaneModel + "," + numFirstClassSeats + "," + numBussinessClassSeats + "," + numEconomyClassSeats
 				 + "," + dateStr + "," + flightClass);
