@@ -275,6 +275,11 @@ public class DataService {
 	public Response removeFlight(Flight flightToRemove) {
 		Flights flights = Data.getFlights(servletCtx);
 		
+		// You cant delete flight if it has reservations
+		if (flightToRemove.getReservations().size() != 0) {
+			return null;
+		}
+		
 		if (!flights.removeFlight(flightToRemove)) {
 			return null;
 		}

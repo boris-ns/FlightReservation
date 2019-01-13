@@ -142,6 +142,11 @@ Vue.component('admin-flights', {
         },
 
         removeFlight : function(flight) {
+            if (flight.reservations.length !== 0) {
+                toast('Ne možete obrisati let jer postoje rezervacije za njega.');
+                return;
+            }
+
             axios.post('rest/data/removeFlight', flight)
             .then(response => {
                 if (response.data === '') {
