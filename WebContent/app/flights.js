@@ -15,7 +15,22 @@ Vue.component('admin-flights', {
                 flightDate: null,
                 flightClass: null,
             },
+            backupFlight: {
+                oldFlightId: null,
+                flightId: null,
+                startDest: null,
+                endDest: null,
+                reservations: [],
+                ticketPrice: null,
+                airplaneModel: null,
+                numFirstClassSeats: null,
+                numBussinessClassSeats: null,
+                numEconomyClassSeats: null,
+                flightDate: null,
+                flightClass: null,
+            },
             destinations: [],
+            editingEnabled: false,
         }
     },
 
@@ -63,6 +78,45 @@ Vue.component('admin-flights', {
             </table>
         </div>
 
+        <div id="editFlightForm">
+            <table>
+                <tr><input type="text"   placeholder="Broj leta (ID)" v-model="backupFlight.flightId" /></tr>
+                
+                <tr>
+                    Početna destinacija
+                    <select v-model="backupFlight.startDest">
+                        <option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+                    </select>
+                </tr>
+
+                <tr>
+                    Krajnja destinacija:
+                    <select v-model="backupFlight.endDest">
+                        <option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+                    </select>
+                </tr>
+
+                <tr><input type="number" placeholder="Cena karte"                    v-model="backupFlight.ticketPrice"            min="0" /></tr>
+                <tr><input type="text"   placeholder="Model aviona"                  v-model="backupFlight.airplaneModel"          /></tr>
+                <tr><input type="number" placeholder="Broj mesta u prvoj klasi"      v-model="backupFlight.numFirstClassSeats"     min="0" /></tr>
+                <tr><input type="number" placeholder="Broj mesta u biznis klasi"     v-model="backupFlight.numBussinessClassSeats" min="0" /></tr>
+                <tr><input type="number" placeholder="Broj mesta u ekonomskoj klasi" v-model="backupFlight.numEconomyClassSeats"   min="0" /></tr>
+                <tr><input type="date"   placeholder="Datum leta"                    v-model="backupFlight.flightDate"             /></tr>
+
+                <tr>
+                    Klasa leta:
+                    <select v-model="backupFlight.flightClass">
+                        <option value="CHARTER">Čarter</option>
+                        <option value="REGIONAL">Regionalni</option>
+                        <option value="OVERSEAS">Prekookeanski</option>
+                    </select>
+                </tr>
+                
+                <tr><input type="button" value="Izmeni"  v-on:click="editFlight()" /></tr>
+                <tr><input type="button" value="Poništi" v-on:click="onCancelEdit()" /></tr>
+            </table> 
+        </div>
+
         <h3>Spisak svih letova</h3>
 
         <table>
@@ -83,6 +137,7 @@ Vue.component('admin-flights', {
                 <th>Datum leta</th>
                 <th>Klasa leta</th>
                 <th>Brisanje</th>
+                <th>Izmena</th>
             </tr>
 
             <tr v-for="f in flights">
@@ -103,6 +158,9 @@ Vue.component('admin-flights', {
                 <td>{{f.flightClass}}</td>
                 <td>
                     <input type="button" value="Obriši" v-on:click="removeFlight(f)" />
+                </td>
+                <td>
+                    <input type="button" value="Izmeni" v-on:click="onClickEdit(f)" />
                 </td>
             </tr>
         </table>
@@ -158,11 +216,59 @@ Vue.component('admin-flights', {
                 this.flights.splice(indexOfFlight, 1);
             });
         },
+
+        onClickEdit : function(flightToEdit) {
+            if (this.editingEnabled) {
+                toast('Ne možete menjati informicije o 2 leta istovremeno.');
+                return;
+            }
+
+            this.editingEnabled = true;
+            this.backupFlight = Object.assign({}, flightToEdit);
+            this.backupFlight.oldFlightId = this.backupFlight.flightId;
+
+            $('#editFlightForm').show();
+        },
+
+        onCancelEdit : function() {
+            $('#editFlightForm').hide();
+            this.editingEnabled = false;
+        },
+
+        editFlight : function() {
+            axios.post('rest/data/editFlight', this.backupFlight)
+            .then(response => {
+                if (response.data === '') {
+                    toast('Greška tokom izmene podataka o letu.');
+                    return;
+                }
+
+                let flightToEdit = this.flights.find(obj => obj.flightId === this.backupFlight.oldFlightId);
+                this.copyDataIntoObject(flightToEdit, response.data);
+                $('#editFlightForm').hide();
+                this.editingEnabled = false;
+            });
+        },
+
+        copyDataIntoObject : function(toObj, fromObj) {
+            toObj.flightId = fromObj.flightId;
+            toObj.startDest = fromObj.startDest;
+            toObj.endDest = fromObj.endDest;
+            toObj.reservations = fromObj.reservations;
+            toObj.ticketPrice = fromObj.ticketPrice;
+            toObj.airplaneModel = fromObj.airplaneModel;
+            toObj.numFirstClassSeats = fromObj.numFirstClassSeats;
+            toObj.numBussinessClassSeats = fromObj.numBussinessClassSeats;
+            toObj.numEconomyClassSeats = fromObj.numEconomyClassSeats;
+            toObj.flightDate = fromObj.flightDate;
+            toObj.flightClass = fromObj.flightClass;
+        }
     },
 
     mounted() {
         this.getAllDestinations();
         this.getAllFlights();
         $('#addFlight').hide();
+        $('#editFlightForm').hide();
     }
 });

@@ -20,6 +20,7 @@ import common.Consts;
 import model.Destination;
 import model.DestinationToEdit;
 import model.Flight;
+import model.FlightToEdit;
 import model.User;
 import model.collections.Destinations;
 import model.collections.Flights;
@@ -247,6 +248,7 @@ public class DataService {
 	
 	@POST
 	@Path("/addFlight")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Flight addFlight(Flight flightToAdd) {
 		Flights flights = Data.getFlights(servletCtx);
@@ -271,6 +273,7 @@ public class DataService {
 	
 	@POST
 	@Path("/removeFlight")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeFlight(Flight flightToRemove) {
 		Flights flights = Data.getFlights(servletCtx);
@@ -286,5 +289,42 @@ public class DataService {
 
 		flights.saveFlights();
 		return Response.ok("OK").build();
+	}
+	
+	@POST
+	@Path("/editFlight")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Flight editFlight(FlightToEdit flight) {
+		Destinations destinations = Data.getDestinations(servletCtx);
+		Flights flights = Data.getFlights(servletCtx);
+		Flight flightToEdit = flights.findFlight(flight.getOldFlightId());
+		
+		if (flightToEdit == null) {
+			return null;
+		}
+
+		Destination startDest = destinations.findDestinationByAirportCode(flight.getStartDest().getAirportCode());
+		Destination endDest = destinations.findDestinationByAirportCode(flight.getEndDest().getAirportCode());
+		
+		if (startDest == null || endDest == null) {
+			return null;
+		}
+		
+		flightToEdit.setFlightId(flight.getFlightId());
+		flightToEdit.setStartDest(startDest);
+		flightToEdit.setEndDest(endDest);
+		flightToEdit.setTicketPrice(flight.getTicketPrice());
+		flightToEdit.setAirplaneModel(flight.getAirplaneModel());
+		flightToEdit.setNumFirstClassSeats(flight.getNumFirstClassSeats());
+		flightToEdit.setNumBussinessClassSeats(flight.getNumBussinessClassSeats());
+		flightToEdit.setNumEconomyClassSeats(flight.getNumEconomyClassSeats());
+		flightToEdit.setFlightDate(flight.getFlightDate());
+		flightToEdit.setFlightClass(flight.getFlightClass());
+		
+
+		flights.saveFlights();
+		
+		return flightToEdit;
 	}
 }
