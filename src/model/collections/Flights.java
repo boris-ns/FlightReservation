@@ -143,4 +143,21 @@ public class Flights {
 		
 		return null;
 	}
+	
+	public boolean removeFlight(Flight flight) {
+		int index = -1;
+		
+		for (int i = 0; i < flights.size(); ++i) {
+			if (flights.get(i).getFlightId().equals(flight.getFlightId())) {
+				index = i;
+				break;
+			}
+		}
+		
+		if (index == -1) 
+			return false;
+		
+		flights.remove(index);
+		return true;
+	}
 }

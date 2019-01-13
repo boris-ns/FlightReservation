@@ -82,6 +82,7 @@ Vue.component('admin-flights', {
                 <th>Broj sedišta u ekonomskoj klasi</th>
                 <th>Datum leta</th>
                 <th>Klasa leta</th>
+                <th>Brisanje</th>
             </tr>
 
             <tr v-for="f in flights">
@@ -100,6 +101,9 @@ Vue.component('admin-flights', {
                 <td>{{f.numEconomyClassSeats}}</td>
                 <td>{{convertDate(f.flightDate)}}</td>
                 <td>{{f.flightClass}}</td>
+                <td>
+                    <input type="button" value="Obriši" v-on:click="removeFlight(f)" />
+                </td>
             </tr>
         </table>
     </div>
@@ -135,6 +139,19 @@ Vue.component('admin-flights', {
 
         getAllDestinations : function() {
             axios.get('rest/data/getAllDestinations').then(response => this.destinations = response.data);
+        },
+
+        removeFlight : function(flight) {
+            axios.post('rest/data/removeFlight', flight)
+            .then(response => {
+                if (response.data === '') {
+                    toast('Greška prilikom brisanja leta.');
+                    return;
+                }
+
+                const indexOfFlight = this.flights.findIndex(obj => obj.flightId === flight.flightId);
+                this.flights.splice(indexOfFlight, 1);
+            });
         },
     },
 

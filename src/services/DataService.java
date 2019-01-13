@@ -249,8 +249,6 @@ public class DataService {
 	@Path("/addFlight")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Flight addFlight(Flight flightToAdd) {
-		System.out.println(flightToAdd);
-		
 		Flights flights = Data.getFlights(servletCtx);
 		
 		if (flights.findFlight(flightToAdd.getFlightId()) == null) {
@@ -269,5 +267,19 @@ public class DataService {
 		}
 		
 		return null;
+	}
+	
+	@POST
+	@Path("/removeFlight")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response removeFlight(Flight flightToRemove) {
+		Flights flights = Data.getFlights(servletCtx);
+		
+		if (!flights.removeFlight(flightToRemove)) {
+			return null;
+		}
+
+		flights.saveFlights();
+		return Response.ok("OK").build();
 	}
 }
