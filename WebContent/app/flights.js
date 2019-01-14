@@ -42,7 +42,7 @@ Vue.component('admin-flights', {
             <p>Popunite sledeća polja za unos leta</p>
             
             <table>
-                <tr><input type="text"   placeholder="Broj leta (ID)" v-model="flightToAdd.flightId" /></tr>
+                <tr><input type="text" placeholder="Broj leta (ID)" v-model="flightToAdd.flightId" /></tr>
                 
                 <tr>
                     Početna destinacija
@@ -182,6 +182,10 @@ Vue.component('admin-flights', {
         },
 
         addFlight : function() {
+            if (!this.checkAllInputFields()) {
+                return;
+            }
+
             axios.post('rest/data/addFlight', this.flightToAdd)
             .then(response => {
                 if (response.data === '') {
@@ -250,6 +254,42 @@ Vue.component('admin-flights', {
             });
         },
 
+        checkAllInputFields : function() {
+            if (this.flightToAdd.flightId == null || this.flightToAdd.flightId === '') {
+                toast('Morate uneti broj leta.');
+                return false;
+            } else if (this.flightToAdd.startDest == null) {
+                toast('Morate uneti početnu destinaciju za let');
+                return false;
+            } else if (this.flightToAdd.endDest == null) {
+                toast('Morate uneti krajnju destinaciju za let');
+                return false;
+            } else if (this.flightToAdd.ticketPrice == null) {
+                toast('Niste uneli cenu karte');
+                return false;
+            } else if (this.flightToAdd.airplaneModel == null || this.flightToAdd.airplaneModel === '') {
+                toast('Morate uneti model aviona');
+                return false;
+            } else if (this.flightToAdd.numFirstClassSeats == null) {
+                toast('Niste uneli broj mesta u prvoj klasi');
+                return false;
+            } else if (this.flightToAdd.numBussinessClassSeats == null) {
+                toast('Niste uneli broj mesta u biznis klasi');
+                return false;
+            } else if (this.flightToAdd.numEconomyClassSeats == null) {
+                toast('Niste uneli broj mesta u ekonomskoj klasi');
+                return false;
+            } else if (this.flightToAdd.flightDate == null) {
+                toast('Niste uneli datum');
+                return false;
+            } else if (this.flightToAdd.flightClass == null) {
+                toast('Niste uneli klasu leta');
+                return false;
+            }
+
+            return true;
+        },
+
         copyDataIntoObject : function(toObj, fromObj) {
             toObj.flightId = fromObj.flightId;
             toObj.startDest = fromObj.startDest;
@@ -262,7 +302,7 @@ Vue.component('admin-flights', {
             toObj.numEconomyClassSeats = fromObj.numEconomyClassSeats;
             toObj.flightDate = fromObj.flightDate;
             toObj.flightClass = fromObj.flightClass;
-        }
+        },
     },
 
     mounted() {
