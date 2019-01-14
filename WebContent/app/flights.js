@@ -63,7 +63,7 @@ Vue.component('admin-flights', {
                 <tr><input type="number" placeholder="Broj mesta u prvoj klasi"      v-model="flightToAdd.numFirstClassSeats"     min="0" /></tr>
                 <tr><input type="number" placeholder="Broj mesta u biznis klasi"     v-model="flightToAdd.numBussinessClassSeats" min="0" /></tr>
                 <tr><input type="number" placeholder="Broj mesta u ekonomskoj klasi" v-model="flightToAdd.numEconomyClassSeats"   min="0" /></tr>
-                <tr><input type="date"   placeholder="Datum leta"                    v-model="flightToAdd.flightDate"             /></tr>
+                <tr><input type="date"   placeholder="Datum leta"                    v-model="flightToAdd.flightDate"             class="date-input" /></tr>
 
                 <tr>
                     Klasa leta:
@@ -101,7 +101,7 @@ Vue.component('admin-flights', {
                 <tr><input type="number" placeholder="Broj mesta u prvoj klasi"      v-model="backupFlight.numFirstClassSeats"     min="0" /></tr>
                 <tr><input type="number" placeholder="Broj mesta u biznis klasi"     v-model="backupFlight.numBussinessClassSeats" min="0" /></tr>
                 <tr><input type="number" placeholder="Broj mesta u ekonomskoj klasi" v-model="backupFlight.numEconomyClassSeats"   min="0" /></tr>
-                <tr><input type="date"   placeholder="Datum leta"                    v-model="backupFlight.flightDate"             /></tr>
+                <tr><input type="date"   placeholder="Datum leta"                    v-model="backupFlight.flightDate"             class="date-input" /></tr>
 
                 <tr>
                     Klasa leta:
@@ -310,5 +310,10 @@ Vue.component('admin-flights', {
         this.getAllFlights();
         $('#addFlight').hide();
         $('#editFlightForm').hide();
+
+        // Setting the minimal value (today) for date input fields
+        var now = new Date(),
+        minDate = now.toISOString().substring(0,10);
+        $('.date-input').prop('min', minDate);
     }
 });
