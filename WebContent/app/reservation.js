@@ -148,7 +148,7 @@ Vue.component('reservation', {
         	
         	axios.post('rest/data/reserveTicket', ticket)
         	.then(response => {
-        		if (response.data == null) {
+        		if (response.data == '') {
         			toast('Nema dovoljno slobodnih mesta za ovu klasu rezervacije');
         			return;
         		}

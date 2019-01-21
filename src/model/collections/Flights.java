@@ -59,6 +59,7 @@ public class Flights {
 					continue;
 				
 				st = new StringTokenizer(line, ",");
+				int numOfTokens = st.countTokens();
 
 				String flightId = st.nextToken().trim();
 				
@@ -70,7 +71,7 @@ public class Flights {
 
 				// If there are 11 elements in one CSV line that means there are reservations for this flight
 				ArrayList<Reservation> reservs = new ArrayList<Reservation>();
-				if (st.countTokens() == 11) {
+				if (numOfTokens == 11) {
 					String reservationsIds = st.nextToken().trim();
 					reservs = getReservations(reservationsIds, reservations);
 				}
