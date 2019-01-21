@@ -61,12 +61,12 @@ public class Reservation {
 		this.dateTime = dateTime;
 	}
 	
-	public ReservationClass getFlightClass() {
+	public ReservationClass getReservationClass() {
 		return reservationClass;
 	}
 	
-	public void setFlightClass(ReservationClass flightClass) {
-		this.reservationClass = flightClass;
+	public void setReservationClass(ReservationClass reservationClass) {
+		this.reservationClass = reservationClass;
 	}
 	
 	public int getNumberOfPassengers() {

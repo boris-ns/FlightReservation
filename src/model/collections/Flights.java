@@ -14,6 +14,7 @@ import model.Destination;
 import model.Flight;
 import model.Reservation;
 import model.types.FlightClass;
+import model.types.ReservationClass;
 
 public class Flights {
 
@@ -124,6 +125,38 @@ public class Flights {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean availableSeats(Flight flight, ReservationClass reservClass, int numberOfTickets) {
+		int takenSeatsInClass = getNumberOfTicketsForClass(flight, reservClass);
+		
+		if (reservClass == ReservationClass.FIRST_CLASS) {
+			if (flight.getNumFirstClassSeats() - (numberOfTickets + takenSeatsInClass) >= 0) {
+				return true;
+			}
+		} else if (reservClass == ReservationClass.BUSSINESS_CLASS) {
+			if (flight.getNumBussinessClassSeats() - (numberOfTickets + takenSeatsInClass) >= 0) {
+				return true;
+			}
+		} else if (reservClass == ReservationClass.ECONOMY_CLASS) {
+			if (flight.getNumEconomyClassSeats() - (numberOfTickets + takenSeatsInClass) >= 0) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private int getNumberOfTicketsForClass(Flight flight, ReservationClass reservClass) {
+		int total = 0;
+		
+		for (Reservation r : flight.getReservations()) {
+			if (r.getReservationClass() == reservClass) {
+				++total;
+			}
+		}
+		
+		return total;
 	}
 	
 	public void addFlight(Flight flight) {

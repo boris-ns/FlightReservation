@@ -1,6 +1,7 @@
 package services;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +22,15 @@ import model.Destination;
 import model.DestinationToEdit;
 import model.Flight;
 import model.FlightToEdit;
+import model.Reservation;
+import model.ReservationInfo;
 import model.User;
 import model.collections.Destinations;
 import model.collections.Flights;
+import model.collections.Reservations;
 import model.collections.Users;
 import model.types.DestinationState;
+import model.types.ReservationClass;
 import model.types.UserState;
 import model.types.UserType;
 import utils.ImageWriter;
@@ -326,5 +331,43 @@ public class DataService {
 		flights.saveFlights();
 		
 		return flightToEdit;
+	}
+	
+	@POST
+	@Path("/reserveTicket")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Reservation reserveTicket(ReservationInfo reservationInfo) {
+		Reservations reservations = Data.getReservations(servletCtx);
+		Flights flights = Data.getFlights(servletCtx);
+		Flight flight = flights.findFlight(reservationInfo.getFlight().getFlightId());
+		Reservation reservation = reservationInfo.getReservation();
+		
+		if (flights.availableSeats(flight, reservation.getReservationClass(), reservation.getNumberOfPassengers())) {
+			User user = (User) request.getSession().getAttribute("user-info");
+			reservation.setUser(user);
+			reservation.setDateTime(new Date());
+			
+			reservations.addReservations(reservation);
+			flight.getReservations().add(reservation);
+			
+			flights.saveFlights();
+			reservations.saveReservations();
+			
+			return reservation;
+		}
+		
+		return null;
+	}
+	
+	@GET
+	@Path("/getReservations")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Reservation> getReservations() {
+		User user = (User) request.getSession().getAttribute("user-info");
+		Reservations reservations = Data.getReservations(servletCtx);
+		ArrayList<Reservation> userReservations = reservations.getReservationsForUser(user);
+		
+		return userReservations;
 	}
 }

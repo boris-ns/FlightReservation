@@ -7,6 +7,14 @@ Vue.component('reservation', {
         	flightDate: null,
         	flights: [],
         	flightsToShow: [],
+        	flightReservation: null,
+        	reservation: {
+        		reservationId: null,
+        		user: null,
+        		dateTime: null,
+        		numberOfPassengers: null,
+        		reservationClass: null,
+        	},
         }
     },
 
@@ -54,8 +62,6 @@ Vue.component('reservation', {
     				<th>Model aviona</th>
     				<th>Cena karte</th>
     				<th>Klasa leta</th>
-    				<th>Klasa</th>
-			    	<th>Broj karata</th>
     				<th>&nbsp;</th>
     			</tr>
     			
@@ -68,22 +74,30 @@ Vue.component('reservation', {
 			    	<td>{{f.airplaneModel}}</td>
 			    	<td>{{f.ticketPrice}}</td>
 			    	<td>{{f.flightClass}}</td>
-			    	<td>
-			    		<select>
-			    			<option value="CHARTER">Čarter</option>
-			    			<option value="REGIONAL">Regionalni</option>
-			    			<option value="OVERSEAS">Prekookeanski</option>
-			    		</select>
-			    	</td>
+    				<td><input type="button" value="Rezerviši" v-on:click="openReserveForm(f)" /></td>
+    			</tr>
+    		</table>
+    	</div>
+    	
+    	<div id="reserveFlightForm">
+    		<table>
+    			<tr>
+    				<td>Klasa rezervacije:</td>
     				<td>
-    					<input type="number" min="1" />
-    				</td>
-    				<td>
-    					<input type="button" value="Rezerviši" v-on:click="reserveTicket(f)" />
+    					<select v-model="reservation.reservationClass">
+    						<option value="FIRST_CLASS">Prva klasa</option>
+    						<option value="BUSSINESS_CLASS">Biznis klasa</option>
+    						<option value="ECONOMY_CLASS">Ekonomska klasa</option>
+    					</select>
     				</td>
     			</tr>
-    				
-    			
+    			<tr>
+    				<td>Broj putnika</td>
+    				<td>
+    					<input type="number" min="1" v-model="reservation.numberOfPassengers" />
+    				</td>
+    			</tr>
+		    	<tr><td><input type="button" value="Rezerviši" v-on:click="reserveTicket()" /></td></tr>
     		</table>
     	</div>
     </div>
@@ -99,7 +113,7 @@ Vue.component('reservation', {
         },
         
         onClickFindFlights : function() {
-        	if (!this.checkInputFields()) {
+        	if (!this.checkInputFieldsSearch()) {
         		return;
         	}
         	
@@ -121,11 +135,29 @@ Vue.component('reservation', {
         	$("#searchedFlights").show();
         },
         
-        reserveTicket : function() {
-        	
+        openReserveForm : function(flight) {
+        	this.flightReservation = flight;
+        	$("#reserveFlightForm").show();
         },
         
-        checkInputFields : function() {
+        reserveTicket : function() {
+        	let ticket = {
+        		reservation: this.reservation,
+        		flight: this.flightReservation
+        	};
+        	
+        	axios.post('rest/data/reserveTicket', ticket)
+        	.then(response => {
+        		if (response.data == null) {
+        			toast('Nema dovoljno slobodnih mesta za ovu klasu rezervacije');
+        			return;
+        		}
+        		
+        		$("#reserveFlightForm").hide();
+        	});
+        },
+        
+        checkInputFieldsSearch : function() {
         	if (this.startDest == null) {
         		toast('Morate odabrati početnu destinaciju');
         		return false;
@@ -138,11 +170,12 @@ Vue.component('reservation', {
         	}
         	
         	return true;
-        }
+        },
     },
 
     mounted() {
     	$("#searchedFlights").hide();
+    	$("#reserveFlightForm").hide();
     	this.getAllDestinations();
     	this.getAllFlights();
     }

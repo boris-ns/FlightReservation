@@ -1,6 +1,7 @@
 package services;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import common.Consts;
+import model.Reservation;
 import model.User;
 import model.collections.Users;
 import model.types.UserState;

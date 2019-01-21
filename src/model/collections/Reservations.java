@@ -95,7 +95,27 @@ public static String reservationsFileLocation = "D:\\dev\\flightreservation\\Web
 	}
 	
 	public void addReservations(Reservation reservation) {
+		int lastId = 0;
+
+		if (reservations.size() != 0)
+			lastId = reservations.get(reservations.size() - 1).getReservationId();
+		
+		++lastId;
+		reservation.setReservationId(lastId);
+		
 		this.reservations.add(reservation);
+	}
+	
+	public ArrayList<Reservation> getReservationsForUser(User user) {
+		ArrayList<Reservation> reservationsForUser = new ArrayList<Reservation>();
+		
+		for (Reservation r : reservations) {
+			if (r.getUser().getUsername().equals(user.getUsername())) {
+				reservationsForUser.add(r);
+			}
+		}
+		
+		return reservationsForUser;
 	}
 	
 	public ArrayList<Reservation> getReservations() {
