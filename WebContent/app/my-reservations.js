@@ -21,7 +21,7 @@ Vue.component('my-reservations', {
 
     		<tr v-for="r of reservations">
     			<td>{{r.reservationId}}</td>
-    			<td>{{r.dateTime}}</td>
+    			<td>{{convertDate(r.dateTime)}}</td>
     			<td>{{r.reservationClass}}</td>
     			<td>{{r.numberOfPassengers}}</td>
     			<td><input type="button" value="Otkaži" v-on:click="cancelReservation(r)" /></td>
@@ -37,7 +37,12 @@ Vue.component('my-reservations', {
         
         cancelReservation : function(reservationToCancel) {
         	console.log(reservationToCancel);
-        }
+        },
+        
+        convertDate : function(milliseconds) {
+            let date = new Date(milliseconds);
+            return date.toUTCString();
+        },
     },
 
     mounted() {
