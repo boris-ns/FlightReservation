@@ -106,6 +106,23 @@ public static String reservationsFileLocation = "D:\\dev\\flightreservation\\Web
 		this.reservations.add(reservation);
 	}
 	
+	public boolean removeReservation(int id) {
+		int index = -1;
+
+		for (int i = 0; i < reservations.size(); ++i) {
+			if (reservations.get(i).getReservationId() == id) {
+				index = i;
+				break;
+			}
+		}
+		
+		if (index == -1) 
+			return false;
+	
+		reservations.remove(index);
+		return true;
+	}
+	
 	public ArrayList<Reservation> getReservationsForUser(User user) {
 		ArrayList<Reservation> reservationsForUser = new ArrayList<Reservation>();
 		

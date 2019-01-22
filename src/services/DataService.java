@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -30,7 +31,6 @@ import model.collections.Flights;
 import model.collections.Reservations;
 import model.collections.Users;
 import model.types.DestinationState;
-import model.types.ReservationClass;
 import model.types.UserState;
 import model.types.UserType;
 import utils.ImageWriter;
@@ -369,5 +369,20 @@ public class DataService {
 		ArrayList<Reservation> userReservations = reservations.getReservationsForUser(user);
 		
 		return userReservations;
+	}
+	
+	@GET
+	@Path("/cancelReservation/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelReservation(@PathParam("id") int id) {
+		Reservations reservations = Data.getReservations(servletCtx);
+		
+		if (reservations.removeReservation(id)) {
+			reservations.saveReservations();
+			return Response.ok("OK").build();
+		}
+
+		return null;
 	}
 }

@@ -36,7 +36,17 @@ Vue.component('my-reservations', {
         },
         
         cancelReservation : function(reservationToCancel) {
-        	console.log(reservationToCancel);
+        	axios.get('rest/data/cancelReservation/' + reservationToCancel.reservationId)
+        	.then (response => {
+        		if (response.data == '') {
+        			toast('Došlo je do greške prilikom otkazivanja rezervacije');
+        			return;
+        		}
+        		
+        		const indexOfReservation = this.reservations.findIndex(obj => 
+        			obj.reservationId === reservationToCancel.reservationId);
+                this.reservations.splice(indexOfReservation, 1);
+        	});
         },
         
         convertDate : function(milliseconds) {
