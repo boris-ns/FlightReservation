@@ -18,17 +18,44 @@ Vue.component('registration', {
     template: 
     `
     <div>
-        <table>
-            <h3>Popunite sledeća polja da bi ste se registrovali</h3>
-            <tr><input type="text"     placeholder="Korisničko ime"   v-model="user.username"     /></tr>
-            <tr><input type="password" placeholder="Lozinka"          v-model="user.password"     /></tr>
-            <tr><input type="password" placeholder="Ponovite lozinku" v-model="passwordAgain"     /></tr>
-            <tr><input type="text"     placeholder="Ime"              v-model="user.name"         /></tr>
-            <tr><input type="text"     placeholder="Prezime"          v-model="user.surname"      /></tr>
-            <tr><input type="text"     placeholder="Broj telefona"    v-model="user.phoneNumber"  /></tr>
-            <tr><input type="text"     placeholder="E-Mail"           v-model="user.email"        /></tr>
-            <tr><input type="file"     accept="image/*"               v-on:change="onFileChanged" /></tr>
-            <tr><input type="button"   value="Registruj se"           v-on:click="register()"     /></tr>
+        <table align="center" class="table-form">
+            <tr>
+            	<th colspan="2">Popunite sledeća polja da bi ste se registrovali</th></tr>
+            <tr>
+            	<td>Korisničko ime</td>
+            	<td><input type="text" v-model="user.username" /></td>
+            </tr>
+            <tr>
+            	<td>Lozinka</td>
+            	<td><input type="password" v-model="user.password" /></td>
+            </tr>
+            <tr>
+            	<td>Ponovite lozinku</td>
+            	<td><input type="password" v-model="passwordAgain" /></td>
+            </tr>
+            <tr>
+            	<td>Ime</td>
+            	<td><input type="text" v-model="user.name" /></td>
+            </tr>
+            <tr>
+            	<td>Prezime</td>
+            	<td><input type="text" v-model="user.surname" /></td>
+            </tr>
+            <tr>
+            	<td>Broj telefona</td>
+            	<td><input type="text" v-model="user.phoneNumber" /></td>
+            </tr>
+            <tr>
+            	<td>E-Mail</td>
+            	<td><input type="text" v-model="user.email" /></td>
+            </tr>
+            <tr>
+            	<td>Profilna slika</td>
+            	<td><input type="file" v-on:change="onFileChanged" /></td>
+            </tr>
+            <tr>
+            	<th colspan="2"><input type="button" value="Registruj se" v-on:click="register()" /></th>
+            </tr>
         </table>
     </div>
     `,

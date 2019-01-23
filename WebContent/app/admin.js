@@ -11,7 +11,7 @@ Vue.component('admin-page', {
 
     template:
     `
-    <div>
+    <div align="center">
         <ul class="navbar">
             <li><a href="#" v-on:click="showComponent('admin-all-users')">Korisnici</a></li>
             <li><a href="#" v-on:click="showComponent('admin-destinations')">Destinacije</a></li>

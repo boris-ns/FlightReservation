@@ -11,7 +11,7 @@ Vue.component('home-page', {
 
     template:
     `
-    <div>
+    <div align="center">
         <ul class="navbar">
     		<li><a href="#" v-on:click="showComponent('my-reservations')">Moje rezervacije</a></li>
             <li><a href="#" v-on:click="showComponent('reservation')">Rezerviši kartu</a></li>
