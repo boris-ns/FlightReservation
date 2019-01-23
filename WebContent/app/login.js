@@ -13,12 +13,13 @@ Vue.component('login', {
 
     template:
     `
-    <div v-if="!userLoggedIn">
+    <div class="login-form" v-if="!userLoggedIn">
         <table>
-            <tr><input type="text"     placeholder="Korisničko ime" v-model="user.username" /></tr>
-            <tr><input type="password" placeholder="Lozinka"        v-model="user.password" /></tr>
-            <tr><input type="button"   value="Prijavi se"           v-on:click="login()" /></tr>
-            <tr><a href="#/registration">Nemaš nalog? Registruj se</a></tr>
+        	<tr><td colspan="2"><img src="res/images/logo.png" /></td></tr>
+            <tr><td><input type="text"     placeholder="Korisničko ime" v-model="user.username" /></td></tr>
+            <tr><td><input type="password" placeholder="Lozinka"        v-model="user.password" /></td></tr>
+            <tr><td><input type="button"   value="Prijavi se"           v-on:click="login()"    /></td></tr>
+            <tr><td colspan="2"><a href="#/registration">Nemaš nalog? Registruj se</a></td></tr>
         </table>
     </div>
     <div v-else-if="userLoggedIn">
