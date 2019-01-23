@@ -10,7 +10,7 @@ Vue.component('admin-all-users', {
     <div>
         <h3>Spisak svih korisnika</h3>
         
-        <table>
+        <table class="table-data">
             <tr>
                 <th>Korisničko ime</th>
                 <th>Ime</th>
@@ -19,6 +19,7 @@ Vue.component('admin-all-users', {
                 <th>E-mail</th>
                 <th>Tip</th>
                 <th>Status</th>
+                <th>&nbsp;</th>
             </tr>
             
             <tr v-for="u in users">

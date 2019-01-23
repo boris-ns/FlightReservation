@@ -52,7 +52,7 @@ Vue.component('admin-destinations', {
             </table>
         </div>
 
-        <table>
+        <table class="table-data">
             <tr>
                 <th>Slika</th>
                 <th>Naziv</th>

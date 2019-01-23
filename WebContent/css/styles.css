@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+}
+
+/* Style for tables */
+
+.table-data {
+	border-collapse: collapse;
+}
+
+.table-data td, .table-data th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-data tr:hover {
+	background-color: #bfd7ff;
+}
+
+.table-data th {
+	background-color: #609dff;
+	color: white;
+}
+
+/* Navbar */
+
+.navbar {
+  	list-style-type: none;
+  	margin: 0;
+  	padding: 0;
+  	overflow: hidden;
+  	background-color: #609dff;
+  	text-align: center;
+}
+
+.navbar li {
+	float: left;
+}
+
+.navbar li a {
+	display: block;
+  	color: white;
+  	text-align: center;
+  	padding: 14px 16px;
+  	text-decoration: none;
+  	font-weight: bold;
+}
+
+.navbar li a:hover {
+  	background-color: #bfd7ff;
+}

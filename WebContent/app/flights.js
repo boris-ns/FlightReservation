@@ -119,7 +119,7 @@ Vue.component('admin-flights', {
 
         <h3>Spisak svih letova</h3>
 
-        <table>
+        <table class="table-data">
             <tr>
                 <th>ID</th>
                 <th>Početna destinacija</th>

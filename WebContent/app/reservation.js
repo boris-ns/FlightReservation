@@ -52,7 +52,7 @@ Vue.component('reservation', {
     	<div id="searchedFlights">
     		<h2>Pronađeni letovi</h2>
     		
-    		<table>
+    		<table class="table-data">
     			<tr>
     				<th>Početni aerodrom</th>
     				<th>Kod aerodroma</th>

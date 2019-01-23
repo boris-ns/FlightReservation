@@ -10,7 +10,7 @@ Vue.component('my-reservations', {
     <div>
     	<h1>Moje rezervacije</h1>
     	
-    	<table>
+    	<table class="table-data">
     		<tr>
     			<th>ID</th>
     			<th>Datum i vreme rezervacije</th>

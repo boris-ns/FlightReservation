@@ -12,17 +12,15 @@ Vue.component('home-page', {
     template:
     `
     <div>
-        <div>
-            <ul>
-            	<h1>Ovo je prikaz za korisnika</h1>
-                <li>Hello, {{user.name}} {{user.surname}}</li>
-    			<li><a href="#" v-on:click="showComponent('my-reservations')">Moje rezervacije</a></li>
-                <li><a href="#" v-on:click="showComponent('reservation')">Rezerviši kartu</a></li>
-                <li><a href="#" v-on:click="showComponent('profile-settings')">Podešavanja</a></li>
-                <li><a href="#" v-on:click="logout()">Logout</a></li>
-            </ul>
-        </div>
-        
+        <ul class="navbar">
+    		<li><a href="#" v-on:click="showComponent('my-reservations')">Moje rezervacije</a></li>
+            <li><a href="#" v-on:click="showComponent('reservation')">Rezerviši kartu</a></li>
+            <li><a href="#" v-on:click="showComponent('profile-settings')">Podešavanja</a></li>
+            <li><a href="#" v-on:click="logout()">Odjavi se</a></li>
+    	</ul>
+
+    	<h2>Dobrodošli, {{user.name}} {{user.surname}}</h2>
+
         <component :is="currentComponent" :user="user"></component>
     </div>
     `,
