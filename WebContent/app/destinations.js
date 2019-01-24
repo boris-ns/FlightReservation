@@ -24,73 +24,85 @@ Vue.component('admin-destinations', {
     template:
     `
     <div>
-        <input type="button" value="Dodavanje destinacije" v-on:click="showAddDestComponent()" />
-        <div id="addDestination">
-            <p>Popunite sledeća polja za unos destinacije</p>
-            
-            <table>
-                <tr>
-                	<td>Naziv</td>
-                	<td><input type="text" v-model="destToAdd.name" /></td>
-                </tr>
-                <tr>
-                	<td>Država</td>
-                	<td><input type="text" v-model="destToAdd.country" /></td>
-                </tr>
-                <tr>
-                	<td>Naziv aerodroma</td>
-                	<td><input type="text" v-model="destToAdd.airportName" /></td>
-                </tr>
-                <tr>
-                	<td>Kod aerodroma</td>
-                	<td><input type="text" v-model="destToAdd.airportCode" /></td>
-                </tr>
-                <tr>
-                	<td>Lokacija</td>
-                	<td><input type="text" v-model="destToAdd.location" /></td>
-                </tr>
-                <tr>
-                	<td>Slika</td>
-                	<td><input type="file" accept="image/*" v-on:change="onFileChanged" /></td>
-                </tr>
-                <tr>
-                	<th colspan="2"><input type="button" value="Dodaj" v-on:click="addDestination()" /></th>
-                </tr>
-            </table>
+    	<p>
+    		Dodavanje nove destinacije:
+	    	<input type="button" value="Dodaj" v-on:click="showAddDestComponent()" />
+    	</p>
+    	
+        <div id="addDestination" class="modal">
+        	<div class="modal-content">
+        		<span class="close">&times;</span>
+	            
+	            <p>Popunite sledeća polja za unos destinacije</p>
+	            
+	            <table>
+	                <tr>
+	                	<td>Naziv</td>
+	                	<td><input type="text" v-model="destToAdd.name" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Država</td>
+	                	<td><input type="text" v-model="destToAdd.country" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Naziv aerodroma</td>
+	                	<td><input type="text" v-model="destToAdd.airportName" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Kod aerodroma</td>
+	                	<td><input type="text" v-model="destToAdd.airportCode" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Lokacija</td>
+	                	<td><input type="text" v-model="destToAdd.location" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Slika</td>
+	                	<td><input type="file" accept="image/*" v-on:change="onFileChanged" /></td>
+	                </tr>
+	                <tr>
+	                	<th colspan="2"><input type="button" value="Dodaj" v-on:click="addDestination()" /></th>
+	                </tr>
+	            </table>
+	    	</div>
         </div>
 
-        <div id="editDestinationForm">
-            <table>
-                <tr>
-                	<td>Naziv</td>
-                	<td><input type="text" v-model="backupDest.name" /></td>
-                </tr>
-                <tr>
-                	<td>Država</td>
-                	<td><input type="text" v-model="backupDest.country" /></td>
-                </tr>
-                <tr>
-                	<td>Naziv aerodroma</td>
-                	<td><input type="text" v-model="backupDest.airportName" /></td>
-                </tr>
-                <tr>
-                	<td>Kod aerodroma</td>
-                	<td><input type="text" v-model="backupDest.airportCode" /></td>
-                </tr>
-                <tr>
-                	<td>Lokacija</td>
-                	<td><input type="text" v-model="backupDest.location" /></td>
-                </tr>
-                <tr>
-                	<td>Slika</td>
-                	<td><input type="file" accept="image/*" v-on:change="onFileChanged" /></td>
-                </tr>
-                <tr>
-    				<th><input type="button"  value="Izmeni"  v-on:click="editDestination()" /></th>
-			    	<th><input type="button"  value="Poništi" v-on:click="cancelEdit()" /></th>
-    			</tr>
-            </table>
+        <div id="editDestinationForm" class="modal">
+        	<div class="modal-content">
+	            <table>
+	                <tr>
+	                	<td>Naziv</td>
+	                	<td><input type="text" v-model="backupDest.name" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Država</td>
+	                	<td><input type="text" v-model="backupDest.country" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Naziv aerodroma</td>
+	                	<td><input type="text" v-model="backupDest.airportName" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Kod aerodroma</td>
+	                	<td><input type="text" v-model="backupDest.airportCode" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Lokacija</td>
+	                	<td><input type="text" v-model="backupDest.location" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Slika</td>
+	                	<td><input type="file" accept="image/*" v-on:change="onFileChanged" /></td>
+	                </tr>
+	                <tr>
+	    				<th><input type="button"  value="Izmeni"  v-on:click="editDestination()" /></th>
+				    	<th><input type="button"  value="Poništi" v-on:click="cancelEdit()" /></th>
+	    			</tr>
+	            </table>
+    		</div>
         </div>
+
+    	<h3>Spisak svih destinacija</h3>
 
         <table class="table-data">
             <tr>
@@ -139,7 +151,7 @@ Vue.component('admin-destinations', {
         },
 
         showAddDestComponent : function() {
-            $('#addDestination').toggle();
+        	$('#addDestination').css("display", "block");
         },
 
         onFileChanged : function(event) {
@@ -206,7 +218,7 @@ Vue.component('admin-destinations', {
             this.backupDest = Object.assign({}, destToEdit);
             this.backupDest.oldName = this.backupDest.name;
 
-            $('#editDestinationForm').show();
+            $('#editDestinationForm').css("display", "block");
         },
 
         editDestination : function() {
@@ -233,12 +245,11 @@ Vue.component('admin-destinations', {
                 }
             });
 
-            $('#editDestinationForm').hide();
-            this.editingEnabled = false;
+            this.cancelEdit();
         },
 
         cancelEdit : function() {
-            $('#editDestinationForm').hide();
+            $('#editDestinationForm').css('display', 'none');
             this.editingEnabled = false;
         },
 
@@ -253,7 +264,11 @@ Vue.component('admin-destinations', {
 
     mounted() {
         this.getAllDestinations();
-        $('#addDestination').hide();
-        $('#editDestinationForm').hide();
+        
+        $('.modal').css('display', 'none');
+
+        $('.close').on('click', function() {
+        	$('.modal').css('display', 'none');
+        });
     }
 });

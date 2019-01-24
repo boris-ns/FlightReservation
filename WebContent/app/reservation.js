@@ -81,28 +81,31 @@ Vue.component('reservation', {
     		</table>
     	</div>
     	
-    	<div id="reserveFlightForm">
-    		<table>
-    			<tr>
-    				<td>Klasa rezervacije:</td>
-    				<td>
-    					<select v-model="reservation.reservationClass">
-    						<option value="FIRST_CLASS">Prva klasa</option>
-    						<option value="BUSSINESS_CLASS">Biznis klasa</option>
-    						<option value="ECONOMY_CLASS">Ekonomska klasa</option>
-    					</select>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>Broj putnika</td>
-    				<td>
-    					<input type="number" min="1" v-model="reservation.numberOfPassengers" />
-    				</td>
-    			</tr>
-		    	<tr>
-		    		<th colspan="2"><input type="button" value="Rezerviši" v-on:click="reserveTicket()" /></th>
-		    	</tr>
-    		</table>
+    	<div id="reserveFlightForm" class="modal">
+    		<div class="modal-content">
+	    		<span class="close">&times;</span>
+	    		<table>
+	    			<tr>
+	    				<td>Klasa rezervacije:</td>
+	    				<td>
+	    					<select v-model="reservation.reservationClass">
+	    						<option value="FIRST_CLASS">Prva klasa</option>
+	    						<option value="BUSSINESS_CLASS">Biznis klasa</option>
+	    						<option value="ECONOMY_CLASS">Ekonomska klasa</option>
+	    					</select>
+	    				</td>
+	    			</tr>
+	    			<tr>
+	    				<td>Broj putnika</td>
+	    				<td>
+	    					<input type="number" min="1" v-model="reservation.numberOfPassengers" />
+	    				</td>
+	    			</tr>
+			    	<tr>
+			    		<th colspan="2"><input type="button" value="Rezerviši" v-on:click="reserveTicket()" /></th>
+			    	</tr>
+	    		</table>
+	    	</div>
     	</div>
     </div>
     `,
@@ -141,7 +144,7 @@ Vue.component('reservation', {
         
         openReserveForm : function(flight) {
         	this.flightReservation = flight;
-        	$("#reserveFlightForm").show();
+        	$("#reserveFlightForm").css('display', 'block');
         },
         
         reserveTicket : function() {
@@ -157,7 +160,7 @@ Vue.component('reservation', {
         			return;
         		}
         		
-        		$("#reserveFlightForm").hide();
+        		$("#reserveFlightForm").css('display', 'none');
         	});
         },
         
@@ -179,8 +182,13 @@ Vue.component('reservation', {
 
     mounted() {
     	$("#searchedFlights").hide();
-    	$("#reserveFlightForm").hide();
     	this.getAllDestinations();
     	this.getAllFlights();
+    	
+    	$('.modal').css('display', 'none');
+
+        $('.close').on('click', function() {
+        	$('.modal').css('display', 'none');
+        });
     }
 });

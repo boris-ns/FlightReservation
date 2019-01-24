@@ -37,131 +37,142 @@ Vue.component('admin-flights', {
     template:
     `
     <div>
-        <input type="button" value="Dodavanje leta" v-on:click="toggleFlightComponent()" />
-        <div id="addFlight">
-            <p>Popunite sledeća polja za unos leta</p>
-            
-            <table>
-                <tr>
-                	<td>Broj leta (ID)</td>
-    				<td><input type="text" v-model="flightToAdd.flightId" /></td>
-                </tr>
-                <tr>
-                    <td>Početna destinacija</td>
-                    <td>
-                    	<select v-model="flightToAdd.startDest">
-                    		<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
-                    	</select>
-                    </td>
-                </tr>
-                <tr>
-    				<td>Krajnja destinacija</td>
-                    <td>
-                    	<select v-model="flightToAdd.endDest">
-                    		<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
-                    	</select>
-                    </td>
-                </tr>
-                <tr>
-                	<td>Cena karte</td>
-                	<input type="number" v-model="flightToAdd.ticketPrice" min="0" />
-                </tr>
-                <tr>
-                	<td>Model aviona</td>
-                	<input type="text" v-model="flightToAdd.airplaneModel" />
-                </tr>
-                <tr>
-                	<td>Broj mesta u prvoj klasi</td>
-                	<input type="number" v-model="flightToAdd.numFirstClassSeats" min="0" />
-                </tr>
-                <tr>
-                	<td>Broj mesta u biznis klasi</td>
-                	<input type="number" v-model="flightToAdd.numBussinessClassSeats" min="0" />
-                </tr>
-                <tr>
-                	<td>Broj mesta u ekonomskoj klasi</td>
-                	<input type="number" v-model="flightToAdd.numEconomyClassSeats" min="0" />
-                </tr>
-                <tr>
-                	<td>Datum leta</td>
-                	<input type="date" v-model="flightToAdd.flightDate" class="date-input" />
-                </tr>
-                <tr>
-                    <td>Klasa leta</td>
-                    <td>
-                    	<select v-model="flightToAdd.flightClass">
-                        	<option value="CHARTER">Čarter</option>
-                        	<option value="REGIONAL">Regionalni</option>
-                        	<option value="OVERSEAS">Prekookeanski</option>
-                    	</select>
-                    </td>
-                </tr>
-                <tr>
-                	<th colspan="2"><input type="button" value="Dodaj" v-on:click="addFlight()" /></th>
-                </tr>
-            </table>
+    	<p>
+    		Dodavanje novog leta:
+	    	<input type="button" value="Dodaj" v-on:click="toggleFlightComponent()" />
+    	</p>
+    	
+        <div id="addFlight" class="modal">
+        	<div class="modal-content">
+        		<span class="close">&times;</span>
+        		
+	            <p>Popunite sledeća polja za unos leta</p>
+	            
+	            <table>
+	                <tr>
+	                	<td>Broj leta (ID)</td>
+	    				<td><input type="text" v-model="flightToAdd.flightId" /></td>
+	                </tr>
+	                <tr>
+	                    <td>Početna destinacija</td>
+	                    <td>
+	                    	<select v-model="flightToAdd.startDest">
+	                    		<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+	                    	</select>
+	                    </td>
+	                </tr>
+	                <tr>
+	    				<td>Krajnja destinacija</td>
+	                    <td>
+	                    	<select v-model="flightToAdd.endDest">
+	                    		<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+	                    	</select>
+	                    </td>
+	                </tr>
+	                <tr>
+	                	<td>Cena karte</td>
+	                	<td><input type="number" v-model="flightToAdd.ticketPrice" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Model aviona</td>
+	                	<td><input type="text" v-model="flightToAdd.airplaneModel" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Broj mesta u prvoj klasi</td>
+	                	<td><input type="number" v-model="flightToAdd.numFirstClassSeats" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Broj mesta u biznis klasi</td>
+	                	<td><input type="number" v-model="flightToAdd.numBussinessClassSeats" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Broj mesta u ekonomskoj klasi</td>
+	                	<td><input type="number" v-model="flightToAdd.numEconomyClassSeats" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Datum leta</td>
+	                	<td><input type="date" v-model="flightToAdd.flightDate" class="date-input" /></td>
+	                </tr>
+	                <tr>
+	                    <td>Klasa leta</td>
+	                    <td>
+	                    	<select v-model="flightToAdd.flightClass">
+	                        	<option value="CHARTER">Čarter</option>
+	                        	<option value="REGIONAL">Regionalni</option>
+	                        	<option value="OVERSEAS">Prekookeanski</option>
+	                    	</select>
+	                    </td>
+	                </tr>
+	                <tr>
+	                	<th colspan="2"><input type="button" value="Dodaj" v-on:click="addFlight()" /></th>
+	                </tr>
+	            </table>
+    		</div>
         </div>
 
-        <div id="editFlightForm">
-            <table>
-                <tr>
-                	<td>Broj leta (ID)</td>
-                	<td><input type="text" v-model="backupFlight.flightId" /></td>
-                </tr>
-                <tr>
-                    <td>Početna destinacija</td>
-                    <td>
-                    	<select v-model="backupFlight.startDest">
-                        	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
-    					</select>
-    				</td>
-                </tr>
-                <tr>
-                    <td>Krajnja destinacija</td>
-                    <td>
-                    	<select v-model="backupFlight.endDest">
-                        	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
-                    	</select>
-                    </td>
-                </tr>
-                <tr>
-                	<td>Cena karte</td>
-                	<td><input type="number" v-model="backupFlight.ticketPrice" min="0" /></td>
-                </tr>
-                <tr>
-                	<td>Model aviona</td>
-                	<td><input type="text" v-model="backupFlight.airplaneModel" /></tr></td>
-                <tr>
-                	<td>Broj mesta u prvoj klasi</td>
-                	<td><input type="number" v-model="backupFlight.numFirstClassSeats" min="0" /></td>
-                </tr>
-                <tr>
-                	<td>Broj mesta u biznis klasi</td>
-                	<td><input type="number" v-model="backupFlight.numBussinessClassSeats" min="0" /></td>
-                </tr>
-                <tr>
-                	<td>Broj mesta u ekonomskoj klasi</td>
-                	<td><input type="number" v-model="backupFlight.numEconomyClassSeats" min="0" /></td>
-                </tr>
-                <tr>
-                	<td>Datum leta</td>
-                	<td><input type="date" v-model="backupFlight.flightDate" class="date-input" /></td>
-                </tr>
-                <tr>
-                    <td>Klasa leta</td>
-                    <td>
-	                    <select v-model="backupFlight.flightClass">
-	                        <option value="CHARTER">Čarter</option>
-	                        <option value="REGIONAL">Regionalni</option>
-	                        <option value="OVERSEAS">Prekookeanski</option>
-	                    </select>
-	                </td>
-                </tr>
-                <tr>
-                	<th><input type="button" value="Izmeni"  v-on:click="editFlight()" /></th>
-			    	<th><input type="button" value="Poništi" v-on:click="onCancelEdit()" /></th>
-                </tr>
-            </table> 
+        <div id="editFlightForm" class="modal">
+        	<div class="modal-content">
+	            <table>
+	                <tr>
+	                	<td>Broj leta (ID)</td>
+	                	<td><input type="text" v-model="backupFlight.flightId" /></td>
+	                </tr>
+	                <tr>
+	                    <td>Početna destinacija</td>
+	                    <td>
+	                    	<select v-model="backupFlight.startDest">
+	                        	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+	    					</select>
+	    				</td>
+	                </tr>
+	                <tr>
+	                    <td>Krajnja destinacija</td>
+	                    <td>
+	                    	<select v-model="backupFlight.endDest">
+	                        	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+	                    	</select>
+	                    </td>
+	                </tr>
+	                <tr>
+	                	<td>Cena karte</td>
+	                	<td><input type="number" v-model="backupFlight.ticketPrice" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Model aviona</td>
+	                	<td><input type="text" v-model="backupFlight.airplaneModel" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Broj mesta u prvoj klasi</td>
+	                	<td><input type="number" v-model="backupFlight.numFirstClassSeats" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Broj mesta u biznis klasi</td>
+	                	<td><input type="number" v-model="backupFlight.numBussinessClassSeats" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Broj mesta u ekonomskoj klasi</td>
+	                	<td><input type="number" v-model="backupFlight.numEconomyClassSeats" min="0" /></td>
+	                </tr>
+	                <tr>
+	                	<td>Datum leta</td>
+	                	<td><input type="date" v-model="backupFlight.flightDate" class="date-input" /></td>
+	                </tr>
+	                <tr>
+	                    <td>Klasa leta</td>
+	                    <td>
+		                    <select v-model="backupFlight.flightClass">
+		                        <option value="CHARTER">Čarter</option>
+		                        <option value="REGIONAL">Regionalni</option>
+		                        <option value="OVERSEAS">Prekookeanski</option>
+		                    </select>
+		                </td>
+	                </tr>
+	                <tr>
+	                	<th><input type="button" value="Izmeni"  v-on:click="editFlight()" /></th>
+				    	<th><input type="button" value="Poništi" v-on:click="onCancelEdit()" /></th>
+	                </tr>
+	            </table> 
+    		</div>
         </div>
 
         <h3>Spisak svih letova</h3>
@@ -225,7 +236,7 @@ Vue.component('admin-flights', {
         },
 
         toggleFlightComponent : function() {
-            $('#addFlight').toggle();
+            $('#addFlight').css('display', 'block');
         },
 
         addFlight : function() {
@@ -278,11 +289,11 @@ Vue.component('admin-flights', {
             this.backupFlight = Object.assign({}, flightToEdit);
             this.backupFlight.oldFlightId = this.backupFlight.flightId;
 
-            $('#editFlightForm').show();
+            $('#editFlightForm').css('display', 'block');
         },
 
         onCancelEdit : function() {
-            $('#editFlightForm').hide();
+        	$('#editFlightForm').css('display', 'none');
             this.editingEnabled = false;
         },
 
@@ -296,7 +307,7 @@ Vue.component('admin-flights', {
 
                 let flightToEdit = this.flights.find(obj => obj.flightId === this.backupFlight.oldFlightId);
                 this.copyDataIntoObject(flightToEdit, response.data);
-                $('#editFlightForm').hide();
+                $('#editFlightForm').css('display', 'none');
                 this.editingEnabled = false;
             });
         },
@@ -355,9 +366,13 @@ Vue.component('admin-flights', {
     mounted() {
         this.getAllDestinations();
         this.getAllFlights();
-        $('#addFlight').hide();
-        $('#editFlightForm').hide();
 
+        $('.modal').css('display', 'none');
+
+        $('.close').on('click', function() {
+        	$('.modal').css('display', 'none');
+        });
+        
         // Setting the minimal value (today) for date input fields
         var now = new Date(),
         minDate = now.toISOString().substring(0,10);
