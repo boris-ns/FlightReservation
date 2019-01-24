@@ -29,26 +29,66 @@ Vue.component('admin-destinations', {
             <p>Popunite sledeća polja za unos destinacije</p>
             
             <table>
-                <tr><input type="text"    placeholder="Naziv"            v-model="destToAdd.name"        /></tr>
-                <tr><input type="text"    placeholder="Država"           v-model="destToAdd.country"     /></tr>
-                <tr><input type="text"    placeholder="Naziv aerodroma"  v-model="destToAdd.airportName" /></tr>
-                <tr><input type="text"    placeholder="Kod aerodroma"    v-model="destToAdd.airportCode" /></tr>
-                <tr><input type="text"    placeholder="Lokacija"         v-model="destToAdd.location"    /></tr>
-                <tr><input type="file"    accept="image/*"               v-on:change="onFileChanged"     /></tr>
-                <tr><input type="button"  value="Dodaj"      v-on:click="addDestination()"   /></tr>
+                <tr>
+                	<td>Naziv</td>
+                	<td><input type="text" v-model="destToAdd.name" /></td>
+                </tr>
+                <tr>
+                	<td>Država</td>
+                	<td><input type="text" v-model="destToAdd.country" /></td>
+                </tr>
+                <tr>
+                	<td>Naziv aerodroma</td>
+                	<td><input type="text" v-model="destToAdd.airportName" /></td>
+                </tr>
+                <tr>
+                	<td>Kod aerodroma</td>
+                	<td><input type="text" v-model="destToAdd.airportCode" /></td>
+                </tr>
+                <tr>
+                	<td>Lokacija</td>
+                	<td><input type="text" v-model="destToAdd.location" /></td>
+                </tr>
+                <tr>
+                	<td>Slika</td>
+                	<td><input type="file" accept="image/*" v-on:change="onFileChanged" /></td>
+                </tr>
+                <tr>
+                	<th colspan="2"><input type="button" value="Dodaj" v-on:click="addDestination()" /></th>
+                </tr>
             </table>
         </div>
 
         <div id="editDestinationForm">
             <table>
-                <tr><input type="text"    placeholder="Naziv"           v-model="backupDest.name"        /></tr>
-                <tr><input type="text"    placeholder="Država"          v-model="backupDest.country"     /></tr>
-                <tr><input type="text"    placeholder="Naziv aerodroma" v-model="backupDest.airportName" /></tr>
-                <tr><input type="text"    placeholder="Kod aerodroma"   v-model="backupDest.airportCode" /></tr>
-                <tr><input type="text"    placeholder="Lokacija"        v-model="backupDest.location"    /></tr>
-                <tr><input type="file"    accept="image/*"              v-on:change="onFileChanged"     /></tr>
-                <tr><input type="button"  value="Izmeni"  v-on:click="editDestination()" /></tr>
-                <tr><input type="button"  value="Poništi" v-on:click="cancelEdit()" /></tr>
+                <tr>
+                	<td>Naziv</td>
+                	<td><input type="text" v-model="backupDest.name" /></td>
+                </tr>
+                <tr>
+                	<td>Država</td>
+                	<td><input type="text" v-model="backupDest.country" /></td>
+                </tr>
+                <tr>
+                	<td>Naziv aerodroma</td>
+                	<td><input type="text" v-model="backupDest.airportName" /></td>
+                </tr>
+                <tr>
+                	<td>Kod aerodroma</td>
+                	<td><input type="text" v-model="backupDest.airportCode" /></td>
+                </tr>
+                <tr>
+                	<td>Lokacija</td>
+                	<td><input type="text" v-model="backupDest.location" /></td>
+                </tr>
+                <tr>
+                	<td>Slika</td>
+                	<td><input type="file" accept="image/*" v-on:change="onFileChanged" /></td>
+                </tr>
+                <tr>
+    				<th><input type="button"  value="Izmeni"  v-on:click="editDestination()" /></th>
+			    	<th><input type="button"  value="Poništi" v-on:click="cancelEdit()" /></th>
+    			</tr>
             </table>
         </div>
 

@@ -26,26 +26,28 @@ Vue.component('reservation', {
     	<div id="findFlightsForm">
     		<table>
     			<tr>
-                    Početna destinacija
-                    <select v-model="startDest">
-                    	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
-                    </select>
+                    <td>Početna destinacija</td>
+                    <td>
+	                    <select v-model="startDest">
+	                    	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+	                    </select>
+	                </td>
                 </tr>
-
                 <tr>
-                    Krajnja destinacija:
-                    <select v-model="endDest">
-                    	<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
-                    </select>
+                    <td>Krajnja destinacija</td>
+                    <td>
+                    	<select v-model="endDest">
+                    		<option v-for="dest in destinations" :value="dest">{{dest.name}} {{dest.airportName}}</option>
+                    	</select>
+                    </td>
                 </tr>
-                
                 <tr>
-                	Datum leta:
-                	<input type="date" v-model="flightDate" />
+                	<td>Datum leta</td>
+                	<td><input type="date" v-model="flightDate" /></td>
                	</tr>
-
-                <tr><input type="button" value="Pronađi" v-on:click="onClickFindFlights()" /></tr>
-                
+                <tr>
+                	<th colspan="2"><input type="button" value="Pronađi" v-on:click="onClickFindFlights()" /></th>
+                </tr>
     		</table>
     	</div>
     	
@@ -97,7 +99,9 @@ Vue.component('reservation', {
     					<input type="number" min="1" v-model="reservation.numberOfPassengers" />
     				</td>
     			</tr>
-		    	<tr><td><input type="button" value="Rezerviši" v-on:click="reserveTicket()" /></td></tr>
+		    	<tr>
+		    		<th colspan="2"><input type="button" value="Rezerviši" v-on:click="reserveTicket()" /></th>
+		    	</tr>
     		</table>
     	</div>
     </div>
