@@ -2,6 +2,7 @@ Vue.component('admin-flights', {
     data: function() {
         return {
             flights: [],
+            backupFlights: [],
             flightToAdd: {
                 flightId: null,
                 startDest: null,
@@ -31,6 +32,10 @@ Vue.component('admin-flights', {
             },
             destinations: [],
             editingEnabled: false,
+            searchTerm: null,
+            searchTermDate: null,
+            searchCriteria: null,
+            filterCriteria: null,
         }
     },
 
@@ -175,7 +180,43 @@ Vue.component('admin-flights', {
     		</div>
         </div>
 
-        <h3>Spisak svih letova</h3>
+        <h3>Spisak letova</h3>
+
+    	<table>
+    		<tr>
+    			<td>Filtriranje po</td>
+    			<td>
+    				<select v-model="filterCriteria">
+    					<option value="0" selected>--odaberite--</option>
+    					<option value="1">datumu (najnovije)</option>
+    					<option value="2">klasi leta</option>
+    					<option value="3">broju leta</option>
+    				</select>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td>Pretraga po</td>
+    			<td>
+    				<select v-model="searchCriteria" v-on:change="selectCriteriaChange()">
+    					<option value="0" selected>--odaberite--</option>
+    					<option value="1">početnoj destinaciji</option>
+    					<option value="2">krajnjoj destinaciji</option>
+    					<option value="3">državi početne destinacije</option>
+    					<option value="4">državi krajnje destinacije</option>
+    					<option value="5">datumu leta</option>
+    				</select>
+    			</td>
+		    	<td>
+		    		<input type="text" id="input-field-search" v-model="searchTerm" />
+    				<input type="date" id="input-date-search" v-model="searchTermDate" />
+    			</td>
+    		</tr>
+    		<tr>
+    			<th colspan = 3>
+    				<input type="button" value="Pretraži" v-on:click="filterSearch()" />
+    			</th>
+    		</tr>
+    	</table>
 
         <table class="table-data">
             <tr>
@@ -311,7 +352,124 @@ Vue.component('admin-flights', {
                 this.editingEnabled = false;
             });
         },
+        
+        filterSearch : function() {
+        	// Only first time make backup list
+        	if (this.backupFlights.length == 0) {
+        		this.backupFlights = this.flights; // save the reference to the original list of flights
+        	} else { // Restore backup
+        		this.flights = this.backupFlights;
+        	}
+        	
+        	switch (Number.parseInt(this.searchCriteria)) {
+        	case 0:
+        		if (this.backupFlights != null) this.flights = this.backupFlights;
+        		break;
+        		
+        	case 1:
+        		this.flights = this.getFlightsByStartDest();
+        		break;
+        		
+        	case 2:
+        		this.flights = this.getFlightsByEndDest();
+        		break;
+        		
+        	case 3:
+        		this.flights = this.getFlightsByStartCountry();
+        		break;
+        		
+        	case 4:
+        		this.flights = this.getFlightsByEndCountry();
+        		break;
+        		
+        	case 5:
+        		this.flights = this.getFlightsByDate();
+        		break;
+        	}
+        	
+        	this.filterFlights();
+        },
+        
+        getFlightsByStartDest : function() {
+        	let list = [];
+        	
+        	for (let flight of this.flights) {
+        		if (flight.startDest.name.toLowerCase() === this.searchTerm.toLowerCase()) {
+        			list.push(flight);
+        		}
+        	}
+        	
+        	return list;
+        },
+        
+        getFlightsByEndDest : function() {
+			let list = [];
+			        	
+        	for (let flight of this.flights) {
+        		if (flight.endDest.name.toLowerCase() === this.searchTerm.toLowerCase()) {
+        			list.push(flight);
+        		}
+        	}
+        	
+        	return list;
+        },
+        
+        getFlightsByStartCountry : function() {
+        	let list = [];
+        	
+        	for (let flight of this.flights) {
+        		if (flight.startDest.country.toLowerCase() === this.searchTerm.toLowerCase()) {
+        			list.push(flight);
+        		}
+        	}
+        	
+        	return list;
+        },
+        
+        getFlightsByEndCountry : function() {
+        	let list = [];
+        	
+        	for (let flight of this.flights) {
+        		if (flight.endDest.country.toLowerCase() === this.searchTerm.toLowerCase()) {
+        			list.push(flight);
+        		}
+        	}
+        	
+        	return list;
+        },
+        
+        getFlightsByDate : function() {
+        	let date = new Date(this.searchTermDate);
+        	let list = [];
+        	
+    		date.setHours(0, 0, 0);
+        	
+        	for (let flight of this.flights) {
+        		let flightDate = new Date(flight.flightDate);
+        		flightDate.setHours(0, 0, 0);
+        		
+        		if (flightDate.getTime() === date.getTime()) {
+        			list.push(flight);
+        		}
+        	}
+        	
+        	return list;
+        },
+        
+        filterFlights : function(criteria) {
+        	// sortiraj this.destinations po odredjenom kriterijumu
+        },
 
+        selectCriteriaChange : function() {
+        	if (Number.parseInt(this.searchCriteria) === 5) {
+        		$("#input-field-search").hide();
+        		$("#input-date-search").show();
+        	} else {
+        		$("#input-field-search").show();
+        		$("#input-date-search").hide();
+        	}
+        },
+        
         checkAllInputFields : function() {
             if (this.flightToAdd.flightId == null || this.flightToAdd.flightId === '') {
                 toast('Morate uneti broj leta.');
@@ -377,5 +535,7 @@ Vue.component('admin-flights', {
         var now = new Date(),
         minDate = now.toISOString().substring(0,10);
         $('.date-input').prop('min', minDate);
+        
+        $("#input-date-search").hide();
     }
 });
