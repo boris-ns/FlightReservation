@@ -13,16 +13,13 @@ Vue.component('admin-page', {
     `
     <div align="center">
         <ul class="navbar">
+        	<li><a href="#" v-on:click="showComponent('profile-settings')">Dobrodošli, {{user.name}} {{user.surname}}</a></li>
             <li><a href="#" v-on:click="showComponent('admin-all-users')">Korisnici</a></li>
             <li><a href="#" v-on:click="showComponent('admin-destinations')">Destinacije</a></li>
             <li><a href="#" v-on:click="showComponent('admin-flights')">Letovi</a></li>
             <li><a href="#" v-on:click="showComponent('profile-settings')">Podešavanja</a></li>
             <li><a href="#" v-on:click="logout()">Odjavi se</a></li>
         </ul>
-
-    	<img :src="user.imagePath" alt="Profilna slika nedostupna" />
-
-    	<h3>Dobrodošli, {{user.name}} {{user.surname}}</h3>
 
         <component :is="currentComponent" :user="user"></component>
 
