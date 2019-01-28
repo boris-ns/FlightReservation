@@ -362,29 +362,12 @@ Vue.component('admin-flights', {
         	}
         	
         	switch (Number.parseInt(this.searchCriteria)) {
-        	case 0:
-        		if (this.backupFlights != null) this.flights = this.backupFlights;
-        		break;
-        		
-        	case 1:
-        		this.flights = this.getFlightsByStartDest();
-        		break;
-        		
-        	case 2:
-        		this.flights = this.getFlightsByEndDest();
-        		break;
-        		
-        	case 3:
-        		this.flights = this.getFlightsByStartCountry();
-        		break;
-        		
-        	case 4:
-        		this.flights = this.getFlightsByEndCountry();
-        		break;
-        		
-        	case 5:
-        		this.flights = this.getFlightsByDate();
-        		break;
+        	case 0: this.flights = this.backupFlights;              break;
+        	case 1: this.flights = this.getFlightsByStartDest();    break;
+        	case 2: this.flights = this.getFlightsByEndDest();      break;
+        	case 3: this.flights = this.getFlightsByStartCountry(); break;
+        	case 4: this.flights = this.getFlightsByEndCountry();   break;
+        	case 5: this.flights = this.getFlightsByDate();         break;
         	}
         	
         	this.filterFlights();
@@ -457,7 +440,45 @@ Vue.component('admin-flights', {
         },
         
         filterFlights : function(criteria) {
-        	// sortiraj this.destinations po odredjenom kriterijumu
+        	switch (Number.parseInt(this.filterCriteria)) {
+        	case 0:                                                break;
+        	case 1: this.flights.sort(this.dateComparator);        break;
+        	case 2: this.flights.sort(this.flightClassComparator); break;
+        	case 3: this.flights.sort(this.flightIdComparator);    break;
+        	}
+        },
+        
+        dateComparator : function(f1, f2) {
+        	let flightDate1 = new Date(f1.flightDate);
+        	flightDate1.setHours(0, 0, 0);
+        	
+        	let flightDate2 = new Date(f2.flightDate);
+        	flightDate2.setHours(0, 0, 0);
+        	
+        	if (flightDate1.getTime() < flightDate2.getTime())
+        		return 1;
+        	else if (flightDate1.getTime() > flightDate2.getTime())
+        		return -1;
+        	
+        	return 0;
+        },
+        
+        flightClassComparator : function(f1, f2) {
+        	if (f1.flightClass < f2.flightClass)
+        		return -1;
+        	else if (f1.flightClass > f2.flightClass)
+        		return 1;
+        	
+        	return 0;
+        },
+        
+        flightIdComparator : function(f1, f2) {
+        	if (f1.flightId < f2.flightId)
+        		return 1;
+        	else if (f1.flightId > f2.flightId)
+        		return -1;
+        	
+        	return 0;
         },
 
         selectCriteriaChange : function() {
