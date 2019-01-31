@@ -143,6 +143,14 @@ input[type=button]:hover {
 }
 
 
+/******* Images ********/
 
+.profile-image {
+	width: 150px;
+}
 
+.destination-image {
+	width: 100px;
+	cursor: pointer;
+}
 

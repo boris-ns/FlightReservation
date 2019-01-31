@@ -117,7 +117,7 @@ Vue.component('admin-destinations', {
             </tr>
 
             <tr v-for="dest in destinations">
-                <td><img :src="dest.imagePath" alt="Slika ne postoji" /></td>
+                <td><img class="destination-image" :src="dest.imagePath" alt="Slika ne postoji" onclick="window.open(this.src)" /></td>
                 <td>{{dest.name}}</td>
                 <td>{{dest.country}}</td>
                 <td>{{dest.airportName}}</td>

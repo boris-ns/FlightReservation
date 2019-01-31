@@ -25,7 +25,7 @@ Vue.component('profile-settings', {
         
         <table align="center" class="table-form">
     		<tr>
-    			<th colspan="2"><img :src="userInfo.imagePath" alt="Profilna slika" /></th>
+    			<th colspan="2"><img class="profile-image" :src="userInfo.imagePath" alt="Profilna slika" /></th>
     		</tr>
         	<tr>
         		<td>Korisničko ime</td>
