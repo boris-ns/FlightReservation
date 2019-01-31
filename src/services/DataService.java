@@ -152,9 +152,9 @@ public class DataService {
 		if (user == null) {
 			return null;
 		} else {
-			String location = Consts.usersImgLocation + "/" + user.getUsername();
-			String imageLocation = ImageWriter.saveImage(location, inStream, fileDetail);
-			user.setImagePath(imageLocation);
+			String location = servletCtx.getRealPath("") + Consts.usersImgLocation + "/" + user.getUsername();
+			ImageWriter.saveImage(location, inStream, fileDetail);
+			user.setImagePath(Consts.usersImgLocation + "/" + user.getUsername() + "/" + fileDetail.getFileName());
 			users.saveUsers();
 			return user;
 		}
@@ -211,9 +211,9 @@ public class DataService {
 		if (dest == null) {
 			return null;
 		} else {
-			String imageLocation = Consts.destinationsImgLocation + "/" + name;
-			String fullImageLocation = ImageWriter.saveImage(imageLocation, inStream, fileDetail);
-			dest.setImagePath(fullImageLocation);
+			String imageLocation = servletCtx.getRealPath("") + Consts.destinationsImgLocation + "/" + name;
+			ImageWriter.saveImage(imageLocation, inStream, fileDetail);
+			dest.setImagePath(Consts.destinationsImgLocation + "/" + dest.getName() + "/" + fileDetail.getFileName());
 			dests.saveDestinations();
 			
 			return dest;
