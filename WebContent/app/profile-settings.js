@@ -7,12 +7,14 @@ Vue.component('profile-settings', {
                 name: null,
                 surname: null,
                 phoneNumber: null,
-                email: null
+                email: null,
+                imagePath: null
             },
             oldPassword: null,
             newPassword: null,
             passwordAgain: null,
             selectedImage: null,
+            userImage: null,
         }
     },
 
@@ -23,7 +25,7 @@ Vue.component('profile-settings', {
         
         <table align="center" class="table-form">
     		<tr>
-    			<th colspan="2"><img src="" alt="Profilna slika" /></th>
+    			<th colspan="2"><img :src="userInfo.imagePath" alt="Profilna slika" /></th>
     		</tr>
         	<tr>
         		<td>Korisničko ime</td>
@@ -112,9 +114,17 @@ Vue.component('profile-settings', {
                 }
             });
         },
+        
+        getUserImage : function() {
+        	axios.get('rest/files/getUserImage').then(response => {
+        		let b64Response = btoa(unescape(encodeURIComponent(response.data)));
+        		$("#profile-image").attr("src", "data:image/png;base64," + b64Response);
+        	});
+        },
     },
 
     mounted() {
         axios.get('rest/data/getUserInfo').then(response => this.userInfo = response.data);
+        //this.getUserImage();
     }
 });
