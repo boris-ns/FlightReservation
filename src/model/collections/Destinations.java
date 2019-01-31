@@ -106,12 +106,20 @@ public class Destinations {
 	}
 	
 	public Destination findDestinationByAirportCode(String code) {
-		for (Destination dest : destinations) {
-			if (dest.getAirportCode().equals(code)) {
-				return dest;
+		for (int i = 0; i < destinations.size(); ++i) {
+			if (destinations.get(i).getAirportCode().equals(code)) {
+				return destinations.get(i);
 			}
 		}
 		
 		return null;
+		
+//		for (Destination dest : destinations) {
+//			if (dest.getAirportCode().equals(code)) {
+//				return dest;
+//			}
+//		}
+//		
+//		return null;
 	}
 }

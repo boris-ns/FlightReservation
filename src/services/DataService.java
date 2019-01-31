@@ -247,8 +247,7 @@ public class DataService {
 	@Path("/getAllFlights")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Flight> getAllFlights() {
-		Flights flights = Data.getFlights(servletCtx);
-		return flights.getFlights();
+		return Data.getActiveFlights(servletCtx);
 	}
 	
 	@POST

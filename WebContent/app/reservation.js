@@ -43,7 +43,7 @@ Vue.component('reservation', {
                 </tr>
                 <tr>
                 	<td>Datum leta</td>
-                	<td><input type="date" v-model="flightDate" /></td>
+                	<td><input type="date" class="date-input" v-model="flightDate" /></td>
                	</tr>
                 <tr>
                 	<th colspan="2"><input type="button" value="Pronađi" v-on:click="onClickFindFlights()" /></th>
@@ -148,6 +148,10 @@ Vue.component('reservation', {
         },
         
         reserveTicket : function() {
+        	if (!this.checkInputFieldsReserveForm()) {
+        		return;
+        	}
+        	
         	let ticket = {
         		reservation: this.reservation,
         		flight: this.flightReservation
@@ -178,6 +182,18 @@ Vue.component('reservation', {
         	
         	return true;
         },
+        
+        checkInputFieldsReserveForm : function() {
+			if (this.reservation.reservationClass == null) {
+	    		toast('Morate odabrati klasu rezervacije');
+	    		return false;
+	    	} else if (this.reservation.numberOfPassengers == null || this.reservation.numberOfPassengers < 1) {
+	    		toast('Morate odabrati broj karata za rezervaciju');
+	    		return false;
+	    	}
+				
+	    	return true;
+        },
     },
 
     mounted() {
@@ -190,5 +206,10 @@ Vue.component('reservation', {
         $('.close').on('click', function() {
         	$('.modal').css('display', 'none');
         });
+        
+        // Setting the minimal value (today) for date input fields
+        var now = new Date(),
+        minDate = now.toISOString().substring(0,10);
+        $('.date-input').prop('min', minDate);
     }
 });

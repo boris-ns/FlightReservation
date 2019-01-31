@@ -1,11 +1,15 @@
 package services;
 
+import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 
+import model.Flight;
 import model.collections.Destinations;
 import model.collections.Flights;
 import model.collections.Reservations;
 import model.collections.Users;
+import model.types.DestinationState;
 
 public class Data {
 	
@@ -55,5 +59,20 @@ public class Data {
 		}
 		
 		return flights;
+	}
+	
+	public static ArrayList<Flight> getActiveFlights(ServletContext sCtx) {
+		Flights flights = getFlights(sCtx);
+		ArrayList<Flight> activeFlights = new ArrayList<Flight>();
+		
+		for (int i = 0; i < flights.getFlights().size(); ++i) {
+			Flight f = flights.getFlights().get(i);
+
+			if (f.getStartDest().getState() == DestinationState.ACTIVE && f.getEndDest().getState() == DestinationState.ACTIVE) {
+				activeFlights.add(f);
+			}
+		}
+		
+		return activeFlights;
 	}
 }
