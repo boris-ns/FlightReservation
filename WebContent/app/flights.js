@@ -474,9 +474,9 @@ Vue.component('admin-flights', {
         
         flightIdComparator : function(f1, f2) {
         	if (f1.flightId < f2.flightId)
-        		return 1;
-        	else if (f1.flightId > f2.flightId)
         		return -1;
+        	else if (f1.flightId > f2.flightId)
+        		return 1;
         	
         	return 0;
         },

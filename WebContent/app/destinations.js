@@ -179,6 +179,7 @@ Vue.component('admin-destinations', {
                     .then(response => { 
                         this.selectedImage = null;
                         this.destinations.push(response.data);
+                        $('#addDestination').css("display", "none");
                     });
                 }
             });

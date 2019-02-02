@@ -1,3 +1,6 @@
 Abu Dhabi,United Arab Emirates,Abu Dhabi International Airport,AUH,24;25;59;054;39;04,imagePath,ACTIVE
 Athens,Greece,Athens International Airport,ATH,37;56;11;23;56;50,imagePath,ACTIVE
-neos,grcka,balbal,bla,123,D:/dev/frserver/images/destinations/neos/neos-marmaras.jpg,ACTIVE
+New York,United States,JFK,JFK,location1,res/images/destinations/New York/new-york-in-one-day-guided.jpg,ACTIVE
+Las Vegas,United States,McCarran International Airport,LAS,loc2,res/images/destinations/Las Vegas/strip3_d7b175ef-3642-41a4-9dad-33b9be2b00a9.jpg,ACTIVE
+Paris,France,Paris Aeroport,CDG,loc3,res/images/destinations/Paris/download.jpg,ACTIVE
+Berlin,Germany,Berlin Brandenburg Airport,BER,loc3,res/images/destinations/Berlin/_SCH6057_c_Scholvien_PSR_SC_STD_V2_DL_PPT_0.jpg,ACTIVE

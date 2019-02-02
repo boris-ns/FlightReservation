@@ -81,6 +81,13 @@ public class DataService {
 		return dest.getDestinations();
 	}
 	
+	@GET
+	@Path("/getActiveDestinations")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Destination> getActiveDestinations() {
+		return Data.getActiveDestination(servletCtx);
+	}
+	
 	@POST
 	@Path("/blockUser")
 	@Consumes(MediaType.TEXT_PLAIN)

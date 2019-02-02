@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 
+import model.Destination;
 import model.Flight;
 import model.collections.Destinations;
 import model.collections.Flights;
@@ -33,6 +34,19 @@ public class Data {
 		}
 		
 		return destinations;
+	}
+	
+	public static ArrayList<Destination> getActiveDestination(ServletContext sCtx) {
+		Destinations destinations = getDestinations(sCtx);
+		ArrayList<Destination> activeDestinations = new ArrayList<Destination>();
+		
+		for (int i = 0; i < destinations.getDestinations().size(); ++i) {
+			if (destinations.getDestinations().get(i).getState() == DestinationState.ACTIVE) {
+				activeDestinations.add(destinations.getDestinations().get(i));
+			}
+		}
+		
+		return activeDestinations;
 	}
 	
 	public static Reservations getReservations(ServletContext sCtx) {

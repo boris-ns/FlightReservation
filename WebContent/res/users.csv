@@ -1,5 +1,5 @@
-marko,marko,Marko,Markovic,0615489723,markovic@gmail.com,pathToImage,NORMAL,REGULAR
-pera,pera,Pera,Peric,0652429221,peric@gmail.com,pathToImage,NORMAL,REGULAR
-filip,filip,Filip,Filipovic,0643422245,filipovic@gmail.com,pathToImage,BLOCKED,REGULAR
-admin,admin,Admin,Admin,0601234567,admin@admin.com,pathToImage,NORMAL,ADMIN
-admin2,admin2,Admin2,Admin2,0601234567,admin2@admin.com,pathToImage,BLOCKED,ADMIN
+marko,marko,Marko,Markovic,0615489723,markovic@gmail.com,res/images/users/marko/JPG-logo-highres.jpg,NORMAL,REGULAR
+pera,pera,Pera,Peric,0652429221,peric@gmail.com,res/images/users/admin/JPG-logo-highres.jpg,NORMAL,REGULAR
+filip,filip,Filip,Filipovic,0643422245,filipovic@gmail.com,res/images/users/marko/JPG-logo-highres.jpg,BLOCKED,REGULAR
+admin,admin,Admin,Admin,0601234567,admin@admin.com,res/images/users/admin/JPG-logo-highres.jpg,NORMAL,ADMIN
+admin2,admin2,Admin2,Admin2,0601234567,admin2@admin.com,res/images/users/marko/JPG-logo-highres.jpg,BLOCKED,ADMIN
